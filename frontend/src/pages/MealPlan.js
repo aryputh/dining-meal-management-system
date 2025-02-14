@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Welcome() {
+function MealPlan() {
   return (
     <div>
-      <h1>Welcome</h1>
+      <h1>Meal Plan Selection</h1>
       <nav>
         <Link to="/"><button>Welcome</button></Link>
         <Link to="/dashboard"><button>Dashboard</button></Link>
@@ -20,4 +20,4 @@ function Welcome() {
   );
 }
 
-export default Welcome;
+export default MealPlan;
