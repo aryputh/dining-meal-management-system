@@ -1,23 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import AuthPopup from "../components/AuthPopup";
 
-function Welcome() {
-  return (
-    <div>
-      <h1>Welcome</h1>
-      <nav>
-        <Link to="/"><button>Welcome</button></Link>
-        <Link to="/dashboard"><button>Dashboard</button></Link>
-        <Link to="/meal-plans"><button>Meal Plans</button></Link>
-        <Link to="/menu"><button>Menu</button></Link>
-        <Link to="/payment"><button>Payment</button></Link>
-        <Link to="/feedback"><button>Feedback</button></Link>
-        <Link to="/users"><button>User Management</button></Link>
-        <Link to="/analytics"><button>Analytics</button></Link>
-        <Link to="/orders"><button>Order History</button></Link>
-      </nav>
-    </div>
-  );
-}
+const Welcome = ({ setUser }) => {
+    const [showPopup, setShowPopup] = useState(false);
+
+    return (
+        <div>
+            <h1>Welcome to the Dining Meal Management System</h1>
+            <button onClick={() => setShowPopup(true)}>Login / Register</button>
+            {showPopup && <AuthPopup setUser={setUser} closePopup={() => setShowPopup(false)} />}
+        </div>
+    );
+};
 
 export default Welcome;

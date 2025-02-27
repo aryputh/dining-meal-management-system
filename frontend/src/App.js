@@ -1,31 +1,44 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import Dashboard from "./pages/Dashboard";
-import MealPlan from "./pages/MealPlan";
-import Menu from "./pages/Menu";
-import Payment from "./pages/Payment";
-import Feedback from "./pages/Feedback";
-import UserManagement from "./pages/UserManagement";
-import Analytics from "./pages/Analytics";
-import OrderHistory from "./pages/OrderHistory";
+import AccessDenied from "./pages/AccessDenied";
+import supabase from "./supabaseClient";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/meal-plans" element={<MealPlan />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/feedback" element={<Feedback />} />
-        <Route path="/users" element={<UserManagement />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/orders" element={<OrderHistory />} />
-      </Routes>
-    </Router>
-  );
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            setLoading(false);
+        };
+
+        fetchUser();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user || null);
+        });
+
+        return () => {
+            authListener.subscription.unsubscribe();
+        };
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Welcome setUser={setUser} />} />
+                <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/access-denied" />} />
+                <Route path="/access-denied" element={<AccessDenied />} />
+                <Route path="*" element={<Navigate to={user ? "/dashboard" : "/access-denied"} />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
