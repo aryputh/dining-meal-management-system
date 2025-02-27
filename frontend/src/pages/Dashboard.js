@@ -1,23 +1,41 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import supabase from "../supabaseClient";
+import "../styles/global.css";
 
-function Dashboard() {
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <nav>
-        <Link to="/"><button>Welcome</button></Link>
-        <Link to="/dashboard"><button>Dashboard</button></Link>
-        <Link to="/meal-plans"><button>Meal Plans</button></Link>
-        <Link to="/menu"><button>Menu</button></Link>
-        <Link to="/payment"><button>Payment</button></Link>
-        <Link to="/feedback"><button>Feedback</button></Link>
-        <Link to="/users"><button>User Management</button></Link>
-        <Link to="/analytics"><button>Analytics</button></Link>
-        <Link to="/orders"><button>Order History</button></Link>
-      </nav>
-    </div>
-  );
-}
+const Dashboard = () => {
+    const [userDetails, setUserDetails] = useState(null);
+
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data, error } = await supabase
+                    .from("users")
+                    .select("first_name, last_name")
+                    .eq("user_id", user.id)
+                    .single();
+                
+                if (!error) {
+                    setUserDetails(data);
+                }
+            }
+        };
+        
+        fetchUserDetails();
+    }, []);
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        window.location.href = "/";
+    };
+
+    return (
+        <div>
+            <h1>Dashboard</h1>
+            {userDetails && <h2>Welcome, {userDetails.first_name} {userDetails.last_name}!</h2>}
+            <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+    );
+};
 
 export default Dashboard;
