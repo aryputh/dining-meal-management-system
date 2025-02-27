@@ -41,3 +41,7 @@
 .popup-content button:hover {
     background: #0056b3;
 }
+
+.error-text {
+    color: red;
+}
