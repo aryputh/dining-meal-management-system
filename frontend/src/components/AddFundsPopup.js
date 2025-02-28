@@ -52,6 +52,13 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
         if (error) {
             setError("Failed to add funds.");
         } else {
+            await supabase.from("history").insert([
+                {
+                    user_id: userId,
+                    description: `Added $${amountValidation.roundedValue} via ${paymentMethods.find(pm => pm.payment_method_id === selectedMethod).payment_name}`
+                }
+            ]);
+            
             updateBalance(newBalance); // Update balance in Dashboard
             setError("");
             closePopup();

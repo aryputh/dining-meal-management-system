@@ -4,11 +4,12 @@ import "../styles/global.css";
 import ManageMealPlans from "../components/ManageMealPlans";
 import ManagePaymentMethods from "../components/ManagePaymentMethods";
 import AddFundsPopup from "../components/AddFundsPopup";
+import History from "../components/History";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [mealPlan, setMealPlan] = useState(null);
-    const [showPopup, setShowPopup] = useState(false);
+    const [showSelectMealPlanPopup, setShowSelectMealPlanPopup] = useState(false);
     const [showManagePopup, setShowManagePopup] = useState(false);
     const [showManagePaymentsPopup, setShowManagePaymentsPopup] = useState(false);
     const [availableMealPlans, setAvailableMealPlans] = useState([]);
@@ -57,13 +58,20 @@ const Dashboard = () => {
             .eq("user_id", userDetails.user_id);
         
         if (!error) {
+            await supabase.from("history").insert([
+                {
+                    user_id: userDetails.user_id,
+                    description: `Selected meal plan: ${availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name}`
+                }
+            ]);
+    
             setMealPlan({
                 meal_plan_id: mealPlanId,
                 plan_name: availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name,
                 starting_balance: startingBalance,
                 balance: startingBalance
             });
-            setShowPopup(false);
+            setShowSelectMealPlanPopup(false);
         }
     };
 
@@ -81,6 +89,13 @@ const Dashboard = () => {
             .eq("user_id", userDetails.user_id);
 
         if (!error) {
+            await supabase.from("history").insert([
+                {
+                    user_id: userDetails.user_id,
+                    description: `Removed meal plan: ${mealPlan.plan_name}`
+                }
+            ]);
+    
             setMealPlan(null);
         }
     };
@@ -98,39 +113,50 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <h1>Dashboard</h1>
             {userDetails && (
-                <>
-                    <h2>Welcome, {userDetails.first_name} {userDetails.last_name}!</h2>
-                    {userDetails.role === "student" && (
-                        mealPlan ? (
-                            <div className="meal-plan-card">
-                                <h3>{mealPlan.plan_name}</h3>
-                                <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
-                                <p><strong>Current Balance:</strong> ${mealPlan.balance}</p>
-                                <div className="meal-plan-actions">
-                                    <button className="primary-btn" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
-                                    <button className="danger-btn" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
+                <div className="dashboard-content">
+                    {/* Left Section - Meal Plan Info */}
+                    <div className="left-section">
+                        <h2>Welcome, {userDetails.first_name} {userDetails.last_name}!</h2>
+                        {userDetails.role === "student" && (
+                            mealPlan ? (
+                                <div className="meal-plan-card">
+                                    <h3>{mealPlan.plan_name}</h3>
+                                    <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
+                                    <p><strong>Current Balance:</strong> ${mealPlan.balance}</p>
+                                    <div className="meal-plan-actions">
+                                        <button className="primary-btn" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
+                                        <button className="danger-btn" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
+                                    </div>
                                 </div>
+                            ) : (
+                                <div className="meal-plan-selection">
+                                    <p>No meal plan selected, select one now!</p>
+                                    <button className="primary-btn" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
+                                        Select Meal Plan
+                                    </button>
+                                </div>
+                            )
+                        )}
+                        {userDetails.role === "admin" && (
+                            <div className="admin-buttons">
+                                <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                                <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
                             </div>
-                        ) : (
-                            <div className="meal-plan-selection">
-                                <p>No meal plan selected, select one now!</p>
-                                <button className="primary-btn" onClick={() => { setShowPopup(true); fetchMealPlans(); }}>
-                                    Select Meal Plan
-                                </button>
-                            </div>
-                        )
-                    )}
-                    {userDetails.role === "admin" && (
-                        <div className="admin-buttons">
-                            <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
-                            <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                        )}
+                    </div>
+
+                    {/* Right Section - History (Only for Students) */}
+                    {userDetails.role === "student" && (
+                        <div className="right-section">
+                            <History userId={userDetails.user_id} />
                         </div>
                     )}
-                </>
+                </div>
             )}
+
             <button className="secondary-btn" onClick={handleSignOut}>Sign Out</button>
 
-            {showPopup && (
+            {showSelectMealPlanPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content">
                         <h2>Select a Meal Plan</h2>
@@ -146,10 +172,11 @@ const Dashboard = () => {
                         ) : (
                             <p>No meal plans available.</p>
                         )}
-                        <button className="secondary-btn" onClick={() => setShowPopup(false)}>Close</button>
+                        <button className="secondary-btn" onClick={() => setShowSelectMealPlanPopup(false)}>Close</button>
                     </div>
                 </div>
             )}
+
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
             {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
             {showAddFundsPopup && (

@@ -19,27 +19,20 @@
     text-align: center;
 }
 
+.popup-content form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
 .popup-content input, .popup-content select {
-    width: 100%;
+    flex: 1;
+    width: auto;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.popup-content button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.popup-content button:hover {
-    background: #0056b3;
 }
 
 .error-text {
@@ -47,7 +40,49 @@
 }
 
 .dashboard-container {
-    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.left-section {
+    flex: 1;
+}
+
+.right-section {
+    width: 300px;
+}
+
+.history-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.history-list {
+    margin-top: 10px;
+}
+
+.history-entry {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.history-entry:last-child {
+    border-bottom: none;
+}
+
+.history-entry span {
+    display: block;
+    font-size: 12px;
+    color: gray;
 }
 
 .meal-plan-card {
