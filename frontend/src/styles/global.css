@@ -127,3 +127,20 @@
 .danger-btn:hover {
     background: #b02a37;
 }
+
+/* Dropdown styling */
+.dropdown {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Meal Plan Action Buttons */
+.meal-plan-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}

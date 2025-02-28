@@ -3,6 +3,7 @@ import supabase from "../supabaseClient";
 import "../styles/global.css";
 import ManageMealPlans from "../components/ManageMealPlans";
 import ManagePaymentMethods from "../components/ManagePaymentMethods";
+import AddFundsPopup from "../components/AddFundsPopup";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -11,6 +12,7 @@ const Dashboard = () => {
     const [showManagePopup, setShowManagePopup] = useState(false);
     const [showManagePaymentsPopup, setShowManagePaymentsPopup] = useState(false);
     const [availableMealPlans, setAvailableMealPlans] = useState([]);
+    const [showAddFundsPopup, setShowAddFundsPopup] = useState(false);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -83,6 +85,10 @@ const Dashboard = () => {
         }
     };
 
+    const updateBalance = (newBalance) => {
+        setMealPlan((prev) => ({ ...prev, balance: newBalance }));
+    };
+
     const handleSignOut = async () => {
         await supabase.auth.signOut();
         window.location.href = "/";
@@ -100,9 +106,10 @@ const Dashboard = () => {
                                 <h3>{mealPlan.plan_name}</h3>
                                 <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
                                 <p><strong>Current Balance:</strong> ${mealPlan.balance}</p>
-                                <button onClick={handleRemoveMealPlan} className="danger-btn">
-                                    Remove Meal Plan
-                                </button>
+                                <div className="meal-plan-actions">
+                                    <button className="primary-btn" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
+                                    <button className="danger-btn" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
+                                </div>
                             </div>
                         ) : (
                             <div className="meal-plan-selection">
@@ -145,6 +152,14 @@ const Dashboard = () => {
             )}
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
             {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
+            {showAddFundsPopup && (
+                <AddFundsPopup
+                    closePopup={() => setShowAddFundsPopup(false)}
+                    userId={userDetails.user_id}
+                    currentBalance={mealPlan.balance}
+                    updateBalance={updateBalance}
+                />
+            )}
         </div>
     );
 };
