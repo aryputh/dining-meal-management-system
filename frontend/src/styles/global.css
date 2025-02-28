@@ -76,3 +76,54 @@
 .meal-plan-card strong {
     color: #000;
 }
+
+/* Primary action button */
+.primary-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease-in-out;
+}
+
+.primary-btn:hover {
+    background: #0056b3;
+}
+
+/* Secondary button for less critical actions */
+.secondary-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease-in-out;
+}
+
+.secondary-btn:hover {
+    background: #545b62;
+}
+
+/* Danger button for destructive actions */
+.danger-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease-in-out;
+}
+
+.danger-btn:hover {
+    background: #b02a37;
+}

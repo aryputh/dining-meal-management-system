@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import supabase from "../supabaseClient";
 import "../styles/global.css";
 import ManageMealPlans from "../components/ManageMealPlans";
+import ManagePaymentMethods from "../components/ManagePaymentMethods";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [mealPlan, setMealPlan] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [showManagePopup, setShowManagePopup] = useState(false);
+    const [showManagePaymentsPopup, setShowManagePaymentsPopup] = useState(false);
     const [availableMealPlans, setAvailableMealPlans] = useState([]);
 
     useEffect(() => {
@@ -98,23 +100,28 @@ const Dashboard = () => {
                                 <h3>{mealPlan.plan_name}</h3>
                                 <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
                                 <p><strong>Current Balance:</strong> ${mealPlan.balance}</p>
-                                <button onClick={handleRemoveMealPlan} className="remove-meal-plan-btn">
+                                <button onClick={handleRemoveMealPlan} className="danger-btn">
                                     Remove Meal Plan
                                 </button>
                             </div>
                         ) : (
-                            <>
+                            <div className="meal-plan-selection">
                                 <p>No meal plan selected, select one now!</p>
-                                <button onClick={() => { setShowPopup(true); fetchMealPlans(); }}>Select Meal Plan</button>
-                            </>
+                                <button className="primary-btn" onClick={() => { setShowPopup(true); fetchMealPlans(); }}>
+                                    Select Meal Plan
+                                </button>
+                            </div>
                         )
                     )}
                     {userDetails.role === "admin" && (
-                        <button onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                        <div className="admin-buttons">
+                            <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                            <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                        </div>
                     )}
                 </>
             )}
-            <button onClick={handleSignOut}>Sign Out</button>
+            <button className="secondary-btn" onClick={handleSignOut}>Sign Out</button>
 
             {showPopup && (
                 <div className="popup-overlay">
@@ -125,18 +132,19 @@ const Dashboard = () => {
                                 {availableMealPlans.map((plan) => (
                                     <li key={plan.meal_plan_id}>
                                         {plan.plan_name} - ${plan.starting_balance}
-                                        <button onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
+                                        <button className="primary-btn" onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
                             <p>No meal plans available.</p>
                         )}
-                        <button onClick={() => setShowPopup(false)}>Close</button>
+                        <button className="secondary-btn" onClick={() => setShowPopup(false)}>Close</button>
                     </div>
                 </div>
             )}
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
+            {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
         </div>
     );
 };
