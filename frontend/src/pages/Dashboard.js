@@ -71,6 +71,8 @@ const Dashboard = () => {
                 starting_balance: startingBalance,
                 balance: startingBalance
             });
+
+            window.location.reload();
             setShowSelectMealPlanPopup(false);
         }
     };
@@ -96,6 +98,7 @@ const Dashboard = () => {
                 }
             ]);
     
+            window.location.reload();
             setMealPlan(null);
         }
     };

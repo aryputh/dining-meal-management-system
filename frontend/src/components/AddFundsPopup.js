@@ -62,6 +62,7 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
             updateBalance(newBalance); // Update balance in Dashboard
             setError("");
             closePopup();
+            window.location.reload();
         }
     };
 
