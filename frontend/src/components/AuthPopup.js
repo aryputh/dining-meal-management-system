@@ -89,12 +89,12 @@ const AuthPopup = ({ setUser, closePopup }) => {
                     )}
                     <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                    <button type="submit" disabled={loading}>{isSignUp ? "Sign Up" : "Login"}</button>
+                    <button className="primary-btn" type="submit" disabled={loading}>{isSignUp ? "Sign Up" : "Login"}</button>
                 </form>
-                <button onClick={() => setIsSignUp(!isSignUp)}>
+                <button className="primary-btn" onClick={() => setIsSignUp(!isSignUp)}>
                     {isSignUp ? "Already have an account? Log in" : "Need an account? Sign up"}
                 </button>
-                <button onClick={closePopup}>Close</button>
+                <button className="secondary-btn" onClick={closePopup}>Close</button>
             </div>
         </div>
     );
