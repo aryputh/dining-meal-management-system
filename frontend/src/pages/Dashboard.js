@@ -16,6 +16,7 @@ const Dashboard = () => {
     const [showAddFundsPopup, setShowAddFundsPopup] = useState(false);
     const [menus, setMenus] = useState([]);
     const [loadingMenus, setLoadingMenus] = useState(true);
+    const [historyUpdated, setHistoryUpdated] = useState(false);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -33,7 +34,7 @@ const Dashboard = () => {
                     if (data.role === "student" && data.selected_meal_plan && data.balance >= 0) {
                         const { data: mealPlanData } = await supabase
                             .from("meal_plans")
-                            .select("meal_plan_id, plan_name, starting_balance")
+                            .select("*")
                             .eq("meal_plan_id", data.selected_meal_plan)
                             .single();
 
@@ -64,7 +65,7 @@ const Dashboard = () => {
 
         fetchUserDetails();
         fetchMenusAndMeals();
-    }, []);
+    }, [historyUpdated]);
 
     const fetchMealPlans = async () => {
         const { data, error } = await supabase.from("meal_plans").select("meal_plan_id, plan_name, starting_balance");
@@ -94,7 +95,6 @@ const Dashboard = () => {
                 balance: startingBalance
             });
 
-            window.location.reload();
             setShowSelectMealPlanPopup(false);
         }
     };
@@ -152,6 +152,7 @@ const Dashboard = () => {
             ]);
 
             setUserDetails((prev) => ({ ...prev, balance: newBalance }));
+            setHistoryUpdated((prev) => !prev);
         }
     };
 
@@ -177,7 +178,7 @@ const Dashboard = () => {
                                 <div className="meal-plan-card">
                                     <h3>{mealPlan.plan_name}</h3>
                                     <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
-                                    <p><strong>Current Balance:</strong> ${mealPlan.balance}</p>
+                                    <p><strong>Current Balance:</strong> ${userDetails.balance.toFixed(2)}</p>
                                     <div className="meal-plan-actions">
                                         <button className="primary-btn" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
                                         <button className="danger-btn" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
@@ -199,13 +200,6 @@ const Dashboard = () => {
                             </div>
                         )}
                     </div>
-
-                    {/* Right Section - History (Only for Students) */}
-                    {userDetails.role === "student" && (
-                        <div className="right-section">
-                            <History userId={userDetails.user_id} />
-                        </div>
-                    )}
                 </div>
             )}
 
@@ -262,7 +256,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             )}
-
+            {userDetails?.role === "student" && <History userId={userDetails.user_id} key={historyUpdated} />}
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
             {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
             {showAddFundsPopup && (

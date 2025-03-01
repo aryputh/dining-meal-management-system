@@ -81,7 +81,7 @@
 
 .history-entry span {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: gray;
 }
 
@@ -94,22 +94,6 @@
     width: 300px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
-}
-
-.meal-plan-card h3 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.meal-plan-card p {
-    margin: 10px 0;
-    font-size: 1.1em;
-    color: #555;
-}
-
-.meal-plan-card strong {
-    color: #000;
 }
 
 /* Primary action button */
@@ -179,3 +163,15 @@
     display: flex;
     gap: 10px;
 }
+
+.menu-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
