@@ -5,6 +5,7 @@ import ManageMealPlans from "../components/ManageMealPlans";
 import ManagePaymentMethods from "../components/ManagePaymentMethods";
 import AddFundsPopup from "../components/AddFundsPopup";
 import History from "../components/History";
+import ManageMenus from "../components/ManageMenus";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const [menus, setMenus] = useState([]);
     const [loadingMenus, setLoadingMenus] = useState(true);
     const [historyUpdated, setHistoryUpdated] = useState(false);
+    const [showManageMenusPopup, setShowManageMenusPopup] = useState(false);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -195,6 +197,7 @@ const Dashboard = () => {
                         )}
                         {userDetails.role === "admin" && (
                             <div className="admin-buttons">
+                                <button className="primary-btn" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
                                 <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
                                 <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
                             </div>
@@ -257,6 +260,7 @@ const Dashboard = () => {
                 </div>
             )}
             {userDetails?.role === "student" && <History userId={userDetails.user_id} key={historyUpdated} />}
+            {showManageMenusPopup && <ManageMenus closePopup={() => setShowManageMenusPopup(false)} />}
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
             {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
             {showAddFundsPopup && (
