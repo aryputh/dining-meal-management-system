@@ -14,6 +14,8 @@ const Dashboard = () => {
     const [showManagePaymentsPopup, setShowManagePaymentsPopup] = useState(false);
     const [availableMealPlans, setAvailableMealPlans] = useState([]);
     const [showAddFundsPopup, setShowAddFundsPopup] = useState(false);
+    const [menus, setMenus] = useState([]);
+    const [loadingMenus, setLoadingMenus] = useState(true);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -24,7 +26,7 @@ const Dashboard = () => {
                     .select("user_id, first_name, last_name, role, selected_meal_plan, balance")
                     .eq("user_id", user.id)
                     .single();
-                
+
                 if (!error) {
                     setUserDetails(data);
 
@@ -40,8 +42,28 @@ const Dashboard = () => {
                 }
             }
         };
-        
+
+        const fetchMenusAndMeals = async () => {
+            const { data: menusData, error: menusError } = await supabase.from("menus").select("*");
+            if (menusError) return;
+
+            const menusWithMeals = await Promise.all(
+                menusData.map(async (menu) => {
+                    const { data: mealsData, error: mealsError } = await supabase
+                        .from("meals")
+                        .select("*")
+                        .eq("menu_id", menu.menu_id);
+
+                    return { ...menu, meals: mealsError ? [] : mealsData };
+                })
+            );
+
+            setMenus(menusWithMeals);
+            setLoadingMenus(false);
+        };
+
         fetchUserDetails();
+        fetchMenusAndMeals();
     }, []);
 
     const fetchMealPlans = async () => {
@@ -51,12 +73,12 @@ const Dashboard = () => {
 
     const handleSelectMealPlan = async (mealPlanId, startingBalance) => {
         if (!userDetails || !userDetails.user_id) return;
-        
+
         const { error } = await supabase
             .from("users")
             .update({ selected_meal_plan: mealPlanId, balance: startingBalance })
             .eq("user_id", userDetails.user_id);
-        
+
         if (!error) {
             await supabase.from("history").insert([
                 {
@@ -64,7 +86,7 @@ const Dashboard = () => {
                     description: `Selected meal plan: ${availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name}`
                 }
             ]);
-    
+
             setMealPlan({
                 meal_plan_id: mealPlanId,
                 plan_name: availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name,
@@ -97,9 +119,39 @@ const Dashboard = () => {
                     description: `Removed meal plan: ${mealPlan.plan_name}`
                 }
             ]);
-    
+
             window.location.reload();
             setMealPlan(null);
+        }
+    };
+
+    const handleOrderMeal = async (meal) => {
+        if (!userDetails || userDetails.role !== "student") return;
+
+        const confirmOrder = window.confirm(`Confirm purchase of ${meal.meal_name} for $${meal.price.toFixed(2)}?`);
+        if (!confirmOrder) return;
+
+        if (userDetails.balance < meal.price) {
+            alert("Insufficient balance.");
+            return;
+        }
+
+        const newBalance = userDetails.balance - meal.price;
+
+        const { error } = await supabase
+            .from("users")
+            .update({ balance: newBalance })
+            .eq("user_id", userDetails.user_id);
+
+        if (!error) {
+            await supabase.from("history").insert([
+                {
+                    user_id: userDetails.user_id,
+                    description: `Ordered ${meal.meal_name} for $${meal.price.toFixed(2)}`
+                }
+            ]);
+
+            setUserDetails((prev) => ({ ...prev, balance: newBalance }));
         }
     };
 
@@ -156,6 +208,37 @@ const Dashboard = () => {
                     )}
                 </div>
             )}
+
+            <div className="menu-section">
+                <h2>Menus</h2>
+                {loadingMenus ? (
+                    <p>Loading menus...</p>
+                ) : menus.length === 0 ? (
+                    <p>No menus to display.</p>
+                ) : (
+                    menus.map((menu) => (
+                        <div key={menu.menu_id} className="menu-card">
+                            <h3>Menu for {menu.available_date}</h3>
+                            {menu.meals.length > 0 ? (
+                                <ul>
+                                    {menu.meals.map((meal) => (
+                                        <li key={meal.meal_id} className="meal-item">
+                                            <strong>{meal.meal_name}</strong>: {meal.meal_description} - ${meal.price.toFixed(2)}
+                                            {userDetails?.role === "student" && (
+                                                <button className="primary-btn" onClick={() =>
+                                                    handleOrderMeal(meal)
+                                                }>Order</button>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No meals available for this menu.</p>
+                            )}
+                        </div>
+                    ))
+                )}
+            </div>
 
             <button className="secondary-btn" onClick={handleSignOut}>Sign Out</button>
 
