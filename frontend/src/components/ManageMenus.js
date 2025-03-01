@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../supabaseClient";
 import "../styles/global.css";
+import ManageMeals from "./ManageMeals";
 
 const ManageMenus = ({ closePopup }) => {
     const [menus, setMenus] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [newMenuDate, setNewMenuDate] = useState(new Date().toISOString().split("T")[0]);
+    const [selectedMenu, setSelectedMenu] = useState(null);
 
     useEffect(() => {
-        console.log("Fetching menus...");
         fetchMenus();
     }, []);
 
@@ -19,8 +20,6 @@ const ManageMenus = ({ closePopup }) => {
             .from("menus")
             .select("*")
             .order("available_date", { ascending: false });
-
-        console.log("Fetched menus:", data); // Debugging line
 
         if (error) {
             setError("Error loading menus.");
@@ -80,6 +79,7 @@ const ManageMenus = ({ closePopup }) => {
                         {menus.map((menu) => (
                             <li key={menu.menu_id}>
                                 {menu.available_date}
+                                <button className="primary-btn" onClick={() => setSelectedMenu(menu)}>Manage Meals</button>
                                 <button className="danger-btn" onClick={() => deleteMenu(menu.menu_id)}>Delete</button>
                             </li>
                         ))}
@@ -93,6 +93,14 @@ const ManageMenus = ({ closePopup }) => {
                 }}>
                     Close
                 </button>
+
+                {selectedMenu && (
+                    <ManageMeals
+                        menuId={selectedMenu.menu_id}
+                        menuDate={selectedMenu.available_date}
+                        closePopup={() => setSelectedMenu(null)}
+                    />
+                )}
             </div>
         </div>
     );
