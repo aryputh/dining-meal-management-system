@@ -100,7 +100,7 @@ const ManagePaymentMethods = ({ closePopup }) => {
                                 ) : (
                                     <>
                                         {method.payment_name}
-                                        <button className="secondary-btn" onClick={() => {
+                                        <button className="primary-btn" onClick={() => {
                                             setEditMethod(method.payment_method_id);
                                             setEditMethodName(method.payment_name);
                                         }}>Edit</button>
