@@ -3,11 +3,11 @@ INSERT DESCRIPTION
 
 ### Project Members
 1. Alex Munn (Team Lead)
-    - INSERT ROLE
+    - Support with Supabase and design.
 2. Aryan Puthran
     - Setup and managing Supabase.
 3. Jasmine Erringer
-    - INSERT ROLE
+    - Support with React.js and design.
 
 ## Built With
   - [Firebase Hosting](https://firebase.google.com/docs/hosting)
