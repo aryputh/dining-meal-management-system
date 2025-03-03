@@ -104,7 +104,7 @@ const ManageMealPlans = ({ closePopup }) => {
                     value={startingBalance}
                     onChange={(e) => setStartingBalance(e.target.value)}
                 />
-                <button onClick={addMealPlan}>Add Meal Plan</button>
+                <button className="primary-btn" onClick={addMealPlan}>Add Meal Plan</button>
 
                 {loading ? (
                     <p>Loading meal plans...</p>
@@ -124,18 +124,18 @@ const ManageMealPlans = ({ closePopup }) => {
                                             value={editStartingBalance}
                                             onChange={(e) => setEditStartingBalance(e.target.value)}
                                         />
-                                        <button onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
-                                        <button onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
+                                        <button className="primary-btn" onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
+                                        <button className="secondary-btn" onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
                                         {plan.plan_name} - ${plan.starting_balance}
-                                        <button onClick={() => {
+                                        <button className="primary-btn" onClick={() => {
                                             setEditPlan(plan.meal_plan_id);
                                             setEditPlanName(plan.plan_name);
                                             setEditStartingBalance(plan.starting_balance);
                                         }}>Edit</button>
-                                        <button onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
+                                        <button className="danger-btn" onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
                                     </>
                                 )}
                             </li>
