@@ -15,14 +15,14 @@ We were able to finish everything we wanted to for the first sprint.
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * https://github.com/aryputh/dining-meal-management-system/issues/5
- * https://github.com/aryputh/dining-meal-management-system/issues/17
- * https://github.com/aryputh/dining-meal-management-system/issues/14
- * https://github.com/aryputh/dining-meal-management-system/issues/10
- * https://github.com/aryputh/dining-meal-management-system/issues/8
- * https://github.com/aryputh/dining-meal-management-system/issues/12
- * https://github.com/aryputh/dining-meal-management-system/issues/3
- * https://github.com/aryputh/dining-meal-management-system/issues/2
+ * [03-1 Meal Plan and Menu Management](https://github.com/aryputh/dining-meal-management-system/issues/5)
+ * [Create ER Diagram For Project](https://github.com/aryputh/dining-meal-management-system/issues/17)
+ * [Full platform testing](https://github.com/aryputh/dining-meal-management-system/issues/14)
+ * [07 Populate Database with Values](https://github.com/aryputh/dining-meal-management-system/issues/10)
+ * [03-3 Meal Tracking](https://github.com/aryputh/dining-meal-management-system/issues/8)
+ * [03-2 Allow admin to manage meal plans](https://github.com/aryputh/dining-meal-management-system/issues/12)
+ * [01 Login System](https://github.com/aryputh/dining-meal-management-system/issues/3)
+ * [02 Register System](https://github.com/aryputh/dining-meal-management-system/issues/2)
  
  ## Incomplete Issues/User Stories
  * Every issue we set out to complete was done by the end of sprint 1
