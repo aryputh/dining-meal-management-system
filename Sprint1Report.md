@@ -40,6 +40,13 @@ Please review the following code files, which were actively developed during thi
  * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/MealPlan.js
  * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/Menu.js
  * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/UserManagement.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/AddFundsPopup.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/AuthPopup.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/History.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/ManageMealPlans.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/ManageMeals.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/ManageMenus.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/ManagePaymentMethods.js
  
 ## Retrospective Summary
 Here's what went well:
