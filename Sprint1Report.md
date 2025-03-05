@@ -35,9 +35,11 @@ Here are links to the issues that we completed in this sprint:
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/AccessDenied.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/Dashboard.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/MealPlan.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/Menu.js
+ * https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/UserManagement.js
  
 ## Retrospective Summary
 Here's what went well:
