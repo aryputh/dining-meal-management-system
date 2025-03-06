@@ -54,7 +54,7 @@ Here's what went well:
     * Implemented a history system where students can view all meal related transactions.
     * The history feature logs deposits (credit card, dining dollars, etc.), meal purchases (through the order button), starting balances, and remaining balances in real time.
     * Ensured that purchase transactions immediately deduct from the student's balance and display in their history.
- * Testing went really well, we didn't run into many issues with how stuff was implemnneted and everything matched our user stories and functional requirements.
+ * Testing went really well, we didn't run into many issues with how stuff was implemented and everything matched our user stories and functional requirements.
  * Communication between everyone in the group was great. We were all able to discuss and coordinate the implementation and testing of our project. 
  
 Here's what we'd like to improve:
