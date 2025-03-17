@@ -4,6 +4,11 @@ Video Link: INSERT
 ## What's New (User Facing)
  * Users can login to the system.
  * Users can register with the system.
+ * Students can view meals and menus.
+ * Students can place orders and see their balance.
+ * Students can add meal plans to their accounts.
+ * Students can add funds to their accounts.
+ * Students can see history tracking.
  * Admin add, edit, create, or delete meal plans, menus, and meals.
  * Integration with Supabase, Firebase Hosting, and React.js.
 
