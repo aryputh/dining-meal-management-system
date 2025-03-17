@@ -1,5 +1,5 @@
 # Sprint 1 Report 
-Video Link: INSERT
+Video Link: https://www.youtube.com/watch?v=-B1_y552s7U
 
 ## What's New (User Facing)
  * Users can login to the system.
