@@ -30,7 +30,7 @@ Here are links to the issues that we completed in this sprint:
  * [02 Register System](https://github.com/aryputh/dining-meal-management-system/issues/2)
  
  ## Incomplete Issues/User Stories
- * Every issue we set out to complete was done by the end of sprint 1.
+ Every issue we set out to complete was done by the end of sprint 1.
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
