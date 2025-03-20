@@ -6,11 +6,14 @@ import ManagePaymentMethods from "../components/ManagePaymentMethods";
 import AddFundsPopup from "../components/AddFundsPopup";
 import History from "../components/History";
 import ManageMenus from "../components/ManageMenus";
+import { FeedbackPopup, ViewFeedback } from "../components/FeedbackPopup";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [mealPlan, setMealPlan] = useState(null);
     const [showSelectMealPlanPopup, setShowSelectMealPlanPopup] = useState(false);
+    const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+    const [showViewFeedbackPopup, setShowViewFeedbackPopup] = useState(false);
     const [showManagePopup, setShowManagePopup] = useState(false);
     const [showManagePaymentsPopup, setShowManagePaymentsPopup] = useState(false);
     const [availableMealPlans, setAvailableMealPlans] = useState([]);
@@ -203,6 +206,12 @@ const Dashboard = () => {
                             </div>
                         )}
                     </div>
+                    {userDetails.role === "student" && (
+                        <button className="primary-btn" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
+                    )}
+                    {userDetails.role === "admin" && (
+                        <button className="primary-btn" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
+                    )}
                 </div>
             )}
 
@@ -271,6 +280,8 @@ const Dashboard = () => {
                     updateBalance={updateBalance}
                 />
             )}
+            {showFeedbackPopup && <FeedbackPopup userId={userDetails.user_id} closePopup={() => setShowFeedbackPopup(false)} />}
+            {showViewFeedbackPopup && <ViewFeedback closePopup={() => setShowViewFeedbackPopup(false)} />}
         </div>
     );
 };

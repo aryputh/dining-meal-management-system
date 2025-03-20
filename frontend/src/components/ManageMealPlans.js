@@ -145,7 +145,7 @@ const ManageMealPlans = ({ closePopup }) => {
                     <p>No meal plans available.</p>
                 )}
 
-                <button onClick={closePopup}>Close</button>
+                <button className="secondary-btn" onClick={closePopup}>Close</button>
             </div>
         </div>
     );
