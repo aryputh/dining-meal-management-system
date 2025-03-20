@@ -24,7 +24,9 @@ Here are links to the issues that we completed in this sprint:
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * INSERT
+ * [FeedbackPopup.js](https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/components/FeedbackPopup.js)
+ * [Dashboard.js](https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/pages/Dashboard.js)
+ * [Global Styling](https://github.com/aryputh/dining-meal-management-system/blob/main/frontend/src/styles/global.css)
  
 ## Retrospective Summary
 Here's what went well:
