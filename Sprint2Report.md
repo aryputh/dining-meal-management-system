@@ -39,6 +39,6 @@ Here's what we'd like to improve:
    * Item x
   
 Here are changes we plan to implement in the next sprint:
-   * Item 1
-   * Item 2
-   * Item x
+   * Analytics System
+   * Finalizing design and user experience
+   * Small improvements and bug fixes
