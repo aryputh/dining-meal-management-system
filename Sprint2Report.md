@@ -1,5 +1,5 @@
 # Sprint 2 Report 
-Video Link: INSERT
+Video Link: https://youtu.be/WGZ0GpEipXE
 ## What's New (User Facing)
  * Students can easily add funds to their accounts.
  * Admin can easily manage payment methods at any time.
