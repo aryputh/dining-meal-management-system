@@ -7,6 +7,7 @@ import AddFundsPopup from "../components/AddFundsPopup";
 import History from "../components/History";
 import ManageMenus from "../components/ManageMenus";
 import { FeedbackPopup, ViewFeedback } from "../components/FeedbackPopup";
+import ManageAllergies from "../components/ManageAllergies";
 
 const Dashboard = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -22,6 +23,7 @@ const Dashboard = () => {
     const [loadingMenus, setLoadingMenus] = useState(true);
     const [historyUpdated, setHistoryUpdated] = useState(false);
     const [showManageMenusPopup, setShowManageMenusPopup] = useState(false);
+    const [showManageAllergiesPopup, setShowManageAllergiesPopup] = useState(false);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -203,6 +205,7 @@ const Dashboard = () => {
                                 <button className="primary-btn" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
                                 <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
                                 <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                                <button className="primary-btn" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
                             </div>
                         )}
                     </div>
@@ -282,6 +285,7 @@ const Dashboard = () => {
             )}
             {showFeedbackPopup && <FeedbackPopup userId={userDetails.user_id} closePopup={() => setShowFeedbackPopup(false)} />}
             {showViewFeedbackPopup && <ViewFeedback closePopup={() => setShowViewFeedbackPopup(false)} />}
+            {showManageAllergiesPopup && <ManageAllergies closePopup={() => setShowManageAllergiesPopup(false)} />}
         </div>
     );
 };
