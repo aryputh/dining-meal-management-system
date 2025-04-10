@@ -54,21 +54,26 @@ const Dashboard = () => {
         const fetchMenusAndMeals = async () => {
             const { data: menusData, error: menusError } = await supabase.from("menus").select("*");
             if (menusError) return;
-
+        
             const menusWithMeals = await Promise.all(
                 menusData.map(async (menu) => {
                     const { data: mealsData, error: mealsError } = await supabase
                         .from("meals")
-                        .select("*")
+                        .select("*, meal_allergies:meal_allergies(allergy_id, allergies(allergy_name))")
                         .eq("menu_id", menu.menu_id);
-
-                    return { ...menu, meals: mealsError ? [] : mealsData };
+        
+                    const mealsWithAllergies = mealsData.map(meal => ({
+                        ...meal,
+                        allergies: meal.meal_allergies.map(ma => ma.allergies)
+                    }));
+        
+                    return { ...menu, meals: mealsWithAllergies };
                 })
             );
-
+        
             setMenus(menusWithMeals);
             setLoadingMenus(false);
-        };
+        };        
 
         fetchUserDetails();
         fetchMenusAndMeals();
@@ -233,6 +238,9 @@ const Dashboard = () => {
                                     {menu.meals.map((meal) => (
                                         <li key={meal.meal_id} className="meal-item">
                                             <strong>{meal.meal_name}</strong>: {meal.meal_description} - ${meal.price.toFixed(2)}
+                                            {meal.allergies && meal.allergies.length > 0 && (
+                                                <div><em>Allergies: {meal.allergies.map(a => a.allergy_name).join(", ")}</em></div>
+                                            )}
                                             {userDetails?.role === "student" && (
                                                 <button className="primary-btn" onClick={() =>
                                                     handleOrderMeal(meal)
