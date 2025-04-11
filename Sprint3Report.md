@@ -12,7 +12,8 @@ INS
 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
- * [INS](INS)
+ * [09 Adding Allergies To Meals](https://github.com/aryputh/dining-meal-management-system/issues/21)
+ * [10 Allergy Management](https://github.com/aryputh/dining-meal-management-system/issues/22)
  
 ## Incomplete Issues/User Stories
 INS
