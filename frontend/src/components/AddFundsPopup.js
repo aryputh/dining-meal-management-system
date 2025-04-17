@@ -58,7 +58,7 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
                     description: `Added $${amountValidation.roundedValue} via ${paymentMethods.find(pm => pm.payment_method_id === selectedMethod).payment_name}`
                 }
             ]);
-            
+
             updateBalance(newBalance); // Update balance in Dashboard
             setError("");
             closePopup();

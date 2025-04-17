@@ -22,20 +22,31 @@ const History = ({ userId }) => {
     };
 
     return (
-        <div className="history-card">
-            <h4>History</h4>
-            <div className="history-list">
+        <div>
+            <ul>
                 {history.length > 0 ? (
-                    history.map((entry, index) => (
-                        <div key={index} className="history-entry">
-                            <p>{entry.description}</p>
-                            <span>{new Date(entry.timestamp).toLocaleString()}</span>
-                        </div>
-                    ))
+                    history.slice(0, 4).map((entry, index) => {
+                        const formattedTime = new Date(entry.timestamp).toLocaleString("en-US", {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                        });
+
+                        return (
+                            <li key={index}>
+                                <strong>{formattedTime}</strong>
+                                <br />
+                                <span>{entry.description}</span>
+                            </li>
+                        );
+                    })
                 ) : (
-                    <p>No history available.</p>
+                    <p className="card-text">No history available.</p>
                 )}
-            </div>
+            </ul>
         </div>
     );
 };

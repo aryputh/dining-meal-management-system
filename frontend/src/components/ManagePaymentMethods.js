@@ -96,17 +96,18 @@ const ManagePaymentMethods = ({ closePopup }) => {
                                             value={editMethodName}
                                             onChange={(e) => setEditMethodName(e.target.value)}
                                         />
-                                        <button className="btn btn-primary" onClick={() => updatePaymentMethod(method.payment_method_id)}>Save</button>
-                                        <button className="btn btn-secondary" onClick={() => setEditMethod(null)}>Cancel</button>
+                                        <button className="btn btn-primary btn-sm me-1" onClick={() => updatePaymentMethod(method.payment_method_id)}>Save</button>
+                                        <button className="btn btn-secondary btn-sm me-1" onClick={() => setEditMethod(null)}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
                                         {method.payment_name}
-                                        <button className="btn btn-primary" onClick={() => {
+                                        <br />
+                                        <button className="btn btn-primary btn-sm me-1" onClick={() => {
                                             setEditMethod(method.payment_method_id);
                                             setEditMethodName(method.payment_name);
                                         }}>Edit</button>
-                                        <button className="btn btn-danger" onClick={() => deletePaymentMethod(method.payment_method_id)}>Delete</button>
+                                        <button className="btn btn-danger btn-sm me-1" onClick={() => deletePaymentMethod(method.payment_method_id)}>Delete</button>
                                     </>
                                 )}
                             </li>

@@ -150,7 +150,7 @@ const ManageMeals = ({ menuId, closePopup }) => {
                                     <div>
                                         {meal.allergies.map((a, index) => (
                                             <span key={index} className="badge rounded-pill bg-warning me-1">
-                                            {a.allergy_name}
+                                                {a.allergy_name}
                                             </span>
                                         ))}
                                     </div>

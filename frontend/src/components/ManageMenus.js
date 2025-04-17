@@ -80,8 +80,9 @@ const ManageMenus = ({ closePopup }) => {
                         {menus.map((menu) => (
                             <li key={menu.menu_id}>
                                 {menu.available_date}
-                                <button className="btn btn-primary" onClick={() => setSelectedMenu(menu)}>Manage Meals</button>
-                                <button className="btn btn-danger" onClick={() => deleteMenu(menu.menu_id)}>Delete</button>
+                                <br />
+                                <button className="btn btn-primary btn-sm me-1" onClick={() => setSelectedMenu(menu)}>Manage Meals</button>
+                                <button className="btn btn-danger btn-sm me-1" onClick={() => deleteMenu(menu.menu_id)}>Delete</button>
                             </li>
                         ))}
                     </ul>

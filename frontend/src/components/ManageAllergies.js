@@ -72,7 +72,8 @@ const ManageAllergies = ({ closePopup }) => {
                         {allergies.map((allergy) => (
                             <li key={allergy.allergy_id}>
                                 {allergy.allergy_name}
-                                <button className="btn btn-danger" onClick={() => deleteAllergy(allergy.allergy_id)}>Delete</button>
+                                <br />
+                                <button className="btn btn-danger btn-sm me-1" onClick={() => deleteAllergy(allergy.allergy_id)}>Delete</button>
                             </li>
                         ))}
                     </ul>

@@ -128,18 +128,19 @@ const ManageMealPlans = ({ closePopup }) => {
                                             value={editStartingBalance}
                                             onChange={(e) => setEditStartingBalance(e.target.value)}
                                         />
-                                        <button className="btn btn-primary" onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
-                                        <button className="btn btn-secondary" onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
+                                        <button className="btn btn-primary btn-sm me-1" onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
+                                        <button className="btn btn-secondary btn-sm me-1" onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
                                         {plan.plan_name} - ${plan.starting_balance}
-                                        <button className="btn btn-primary" onClick={() => {
+                                        <br />
+                                        <button className="btn btn-primary btn-sm me-1" onClick={() => {
                                             setEditPlan(plan.meal_plan_id);
                                             setEditPlanName(plan.plan_name);
                                             setEditStartingBalance(plan.starting_balance);
                                         }}>Edit</button>
-                                        <button className="btn btn-danger" onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
+                                        <button className="btn btn-danger btn-sm me-1" onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
                                     </>
                                 )}
                             </li>

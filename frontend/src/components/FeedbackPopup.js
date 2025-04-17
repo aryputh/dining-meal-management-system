@@ -79,17 +79,33 @@ const ViewFeedback = ({ closePopup }) => {
                     <p>Loading feedback...</p>
                 ) : feedbackList.length > 0 ? (
                     <div className="feedback-container">
-                        {feedbackList.map((feedback, index) => (
-                            <div key={index} className="feedback-card">
-                                <p><strong>Feedback {new Date(feedback.created_at).toLocaleString()} - {feedback.rating} stars</strong></p>
-                                <p>{feedback.feedback_text}</p>
-                            </div>
-                        ))}
+                        {feedbackList.map((feedback, index) => {
+                            const date = new Date(feedback.created_at).toLocaleString('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true,
+                            });
+                            return (
+                                <div key={index} className="card bg-secondary mb-3">
+                                    <div className="card-header">
+                                        Feedback at {date}
+                                    </div>
+                                    <div className="card-body">
+                                        <p className="card-text"><strong>{feedback.rating} stars</strong><br />{feedback.feedback_text}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 ) : (
                     <p>No feedback available.</p>
                 )}
-                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>
+                    Close
+                </button>
             </div>
         </div>
     );

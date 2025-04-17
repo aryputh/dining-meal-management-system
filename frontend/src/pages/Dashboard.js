@@ -65,26 +65,26 @@ const Dashboard = () => {
         const fetchMenusAndMeals = async () => {
             const { data: menusData, error: menusError } = await supabase.from("menus").select("*");
             if (menusError) return;
-        
+
             const menusWithMeals = await Promise.all(
                 menusData.map(async (menu) => {
-                    const { data: mealsData} = await supabase
+                    const { data: mealsData } = await supabase
                         .from("meals")
                         .select("*, meal_allergies:meal_allergies(allergy_id, allergies(allergy_name))")
                         .eq("menu_id", menu.menu_id);
-        
+
                     const mealsWithAllergies = mealsData.map(meal => ({
                         ...meal,
                         allergies: meal.meal_allergies.map(ma => ma.allergies)
                     }));
-        
+
                     return { ...menu, meals: mealsWithAllergies };
                 })
             );
-        
+
             setMenus(menusWithMeals);
             setLoadingMenus(false);
-        };        
+        };
 
         if (showPaymentPopup) fetchPayments();
         fetchUserDetails();
@@ -108,7 +108,7 @@ const Dashboard = () => {
             await supabase.from("history").insert([
                 {
                     user_id: userDetails.user_id,
-                    description: `Selected meal plan: ${availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name}`
+                    description: `Selected Plan: ${availableMealPlans.find(mp => mp.meal_plan_id === mealPlanId).plan_name}`
                 }
             ]);
 
@@ -127,7 +127,7 @@ const Dashboard = () => {
         if (!userDetails || !mealPlan) return;
 
         const confirmRemove = window.confirm(
-            "Warning: Removing your meal plan will reset your balance to $0. This action cannot be undone."
+            "Removing your meal plan will reset your balance to $0. This cannot be undone."
         );
         if (!confirmRemove) return;
 
@@ -140,7 +140,7 @@ const Dashboard = () => {
             await supabase.from("history").insert([
                 {
                     user_id: userDetails.user_id,
-                    description: `Removed meal plan: ${mealPlan.plan_name}`
+                    description: `Removed Plan: ${mealPlan.plan_name}`
                 }
             ]);
 
@@ -151,27 +151,27 @@ const Dashboard = () => {
 
     const confirmOrder = async () => {
         if (!selectedMeal || !selectedPaymentMethod) return;
-    
+
         if (userDetails.balance < selectedMeal.price) {
             alert("Insufficient balance.");
             return;
         }
-    
+
         const newBalance = userDetails.balance - selectedMeal.price;
-    
+
         const { error: updateError } = await supabase
             .from("users")
             .update({ balance: newBalance })
             .eq("user_id", userDetails.user_id);
-    
+
         if (!updateError) {
             await supabase.from("history").insert([
                 {
                     user_id: userDetails.user_id,
-                    description: `Ordered ${selectedMeal.meal_name} for $${selectedMeal.price.toFixed(2)}`
+                    description: `Ordered ${selectedMeal.meal_name} ($${selectedMeal.price.toFixed(2)})`
                 }
             ]);
-    
+
             await supabase.from("orders").insert([
                 {
                     user_id: userDetails.user_id,
@@ -179,14 +179,14 @@ const Dashboard = () => {
                     total: selectedMeal.price
                 }
             ]);
-    
+
             setUserDetails((prev) => ({ ...prev, balance: newBalance }));
             setHistoryUpdated((prev) => !prev);
             setSelectedMeal(null);
             setSelectedPaymentMethod(null);
             setShowPaymentPopup(false);
         }
-    };    
+    };
 
     const updateBalance = (newBalance) => {
         setMealPlan((prev) => ({ ...prev, balance: newBalance }));
@@ -216,11 +216,13 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="meal-plan-selection">
-                                    <p>No meal plan selected, select one now!</p>
-                                    <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
-                                        Select Meal Plan
-                                    </button>
+                                <div className="card bg-secondary mb-3">
+                                    <div className="card-header">No Meal Plan Selected</div>
+                                    <div className="card-body">
+                                        <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
+                                            Select Meal Plan
+                                        </button>
+                                    </div>
                                 </div>
                             )
                         )}
@@ -235,14 +237,12 @@ const Dashboard = () => {
                             </div>
                         )}
                         {userDetails.role === "student" && (
-                        <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
+                            <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
                         )}
                     </div>
                 </div>
             )}
-
             <div className="menu-section">
-                <h3>Menus</h3>
                 {loadingMenus ? (
                     <p>Loading menus...</p>
                 ) : menus.length === 0 ? (
@@ -261,10 +261,22 @@ const Dashboard = () => {
                                                     <div>
                                                         {meal.allergies.map((a, index) => (
                                                             <span key={index} className="badge rounded-pill bg-warning me-1">
-                                                            {a.allergy_name}
+                                                                {a.allergy_name}
                                                             </span>
                                                         ))}
                                                     </div>
+                                                )}
+                                                <br></br>
+                                                {userDetails?.role === "student" && (
+                                                    <button
+                                                        className="btn btn-primary btn-sm"
+                                                        onClick={() => {
+                                                            setSelectedMeal(meal);
+                                                            setShowPaymentPopup(true);
+                                                        }}
+                                                    >
+                                                        Order
+                                                    </button>
                                                 )}
                                             </li>
                                         ))}
@@ -277,9 +289,17 @@ const Dashboard = () => {
                     ))
                 )}
             </div>
-
+            {userDetails?.role === "student" && (
+                <div className="card bg-secondary mb-3" style={{ maxWidth: "20rem" }}>
+                    <div className="card-header">History</div>
+                    <div className="card-body">
+                        <div className="card-text">
+                            <History userId={userDetails.user_id} key={historyUpdated} />
+                        </div>
+                    </div>
+                </div>
+            )}
             <button className="btn btn-secondary" onClick={handleSignOut}>Sign Out</button>
-
             {showSelectMealPlanPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content">
@@ -300,7 +320,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             )}
-            {userDetails?.role === "student" && <History userId={userDetails.user_id} key={historyUpdated} />}
             {showManageMenusPopup && <ManageMenus closePopup={() => setShowManageMenusPopup(false)} />}
             {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
             {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}

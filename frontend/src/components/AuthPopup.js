@@ -26,7 +26,7 @@ const AuthPopup = ({ setUser, closePopup }) => {
 
         if (isSignUp) {
             const { data, error } = await supabase.auth.signUp({
-                email, 
+                email,
                 password,
                 options: {
                     data: {
@@ -35,7 +35,7 @@ const AuthPopup = ({ setUser, closePopup }) => {
                         role: role,
                     },
                 },
-            });            
+            });
 
             if (error) {
                 setError(error.message);
@@ -50,7 +50,7 @@ const AuthPopup = ({ setUser, closePopup }) => {
                         role: role,
                     },
                 ]);
-                
+
                 if (insertError) {
                     setError(insertError.message);
                 } else {
