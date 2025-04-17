@@ -54,7 +54,7 @@ const ManageAllergies = ({ closePopup }) => {
         <div className="popup-overlay">
             <div className="popup-content">
                 <h3>Manage Allergy Types</h3>
-                {error && <p className="error-text">{error}</p>}
+                {error && <p className="text-danger">{error}</p>}
 
                 <input
                     type="text"

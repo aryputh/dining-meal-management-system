@@ -31,7 +31,7 @@ const FeedbackPopup = ({ closePopup, userId }) => {
         <div className="popup-overlay">
             <div className="popup-content">
                 <h3>Submit Feedback</h3>
-                {error && <p className="error-text">{error}</p>}
+                {error && <p className="text-danger">{error}</p>}
                 <textarea
                     className="form-control"
                     placeholder="Enter your feedback"

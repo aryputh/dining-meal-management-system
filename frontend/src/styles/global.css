@@ -14176,10 +14176,6 @@ thead th {
     max-width: 70%;
 }
 
-.error-text {
-    color: red;
-}
-
 .dashboard-container {
     display: flex;
     justify-content: space-between;
@@ -14199,7 +14195,6 @@ thead th {
 .feedback-container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
     max-height: 400px;
     overflow-y: auto;
     padding: 10px;

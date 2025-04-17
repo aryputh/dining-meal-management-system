@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 import supabase from "../supabaseClient";
 import "../styles/global.css";
 
@@ -45,6 +46,8 @@ const AnalyticsPage = () => {
     }, []);
 
     return (
+        <>
+            <Navbar />
         <div className="dashboard-container">
             <h2>Admin Analytics</h2>
             {loading ? (
@@ -73,6 +76,7 @@ const AnalyticsPage = () => {
             )}
             <button className="btn btn-secondary" onClick={() => window.location.href = "/dashboard"}>Dashboard</button>
         </div>
+        </>
     );
 };
 

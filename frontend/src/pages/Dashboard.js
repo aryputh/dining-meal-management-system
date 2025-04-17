@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 import supabase from "../supabaseClient";
 import "../styles/global.css";
 import ManageMealPlans from "../components/ManageMealPlans";
@@ -192,199 +193,196 @@ const Dashboard = () => {
         setMealPlan((prev) => ({ ...prev, balance: newBalance }));
     };
 
-    const handleSignOut = async () => {
-        await supabase.auth.signOut();
-        window.location.href = "/";
-    };
-
     return (
-        <div className="dashboard-container">
-            <h2>Dashboard</h2>
-            {userDetails && (
-                <div className="dashboard-content">
-                    {/* Left Section - Meal Plan Info */}
-                    <div className="left-section">
-                        <h3>Welcome, {userDetails.first_name} {userDetails.last_name}!</h3>
-                        {userDetails.role === "student" && (
-                            mealPlan ? (
+        <>
+            <Navbar />
+            <div className="dashboard-container">
+                <h2>Dashboard</h2>
+                {userDetails && (
+                    <div className="dashboard-content">
+                        {/* Left Section - Meal Plan Info */}
+                        <div className="left-section">
+                            <h3>Welcome, {userDetails.first_name} {userDetails.last_name}!</h3>
+                            {userDetails.role === "student" && (
+                                mealPlan ? (
+                                    <div className="card bg-secondary mb-3">
+                                        <div className="card-header">{mealPlan.plan_name}</div>
+                                        <div className="card-body">
+                                            <p className="card-text"><strong>Balance</strong><br />${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
+                                            <button className="btn btn-primary me-1" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
+                                            <button className="btn btn-danger me-1" onClick={handleRemoveMealPlan}>Remove Plan</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="card bg-secondary mb-3">
+                                        <div className="card-header">No Meal Plan Selected</div>
+                                        <div className="card-body">
+                                            <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
+                                                Select Meal Plan
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            )}
+                            {userDetails.role === "admin" && (
                                 <div className="card bg-secondary mb-3">
-                                    <div className="card-header">{mealPlan.plan_name}</div>
+                                    <div className="card-header">Admin Controls</div>
                                     <div className="card-body">
-                                        <p className="card-text"><strong>Balance</strong><br />${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
-                                        <button className="btn btn-primary me-1" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
-                                        <button className="btn btn-danger me-1" onClick={handleRemoveMealPlan}>Remove Plan</button>
+                                        <p className="card-text">Manage meals, allergies, menus, and payment methods.</p>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
+                                        <br /><br />
+                                        <p className="card-text">View feedback and analytics from students.</p>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
+                                        <button className="btn btn-primary me-1 mb-1" onClick={() => window.location.href = "/analytics"}>Analytics</button>
                                     </div>
                                 </div>
-                            ) : (
-                                <div className="card bg-secondary mb-3">
-                                    <div className="card-header">No Meal Plan Selected</div>
-                                    <div className="card-body">
-                                        <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
-                                            Select Meal Plan
-                                        </button>
-                                    </div>
-                                </div>
-                            )
-                        )}
-                        {userDetails.role === "admin" && (
-                            <div className="card bg-secondary mb-3">
-                                <div className="card-header">Admin Controls</div>
+                            )}
+                            {userDetails.role === "student" && (
+                                <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
+                            )}
+                        </div>
+                    </div>
+                )}
+                <div className="menu-section">
+                    {loadingMenus ? (
+                        <p>Loading menus...</p>
+                    ) : menus.length === 0 ? (
+                        <p>No menus to display.</p>
+                    ) : (
+                        menus.map((menu) => (
+                            <div key={menu.menu_id} className="card bg-secondary mb-3">
+                                <div className="card-header">Menu for {menu.available_date}</div>
                                 <div className="card-body">
-                                    <p className="card-text">Manage meals, allergies, menus, and payment methods.</p>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
-                                    <br /><br />
-                                    <p className="card-text">View feedback and analytics from students.</p>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
-                                    <button className="btn btn-primary me-1 mb-1" onClick={() => window.location.href = "/analytics"}>Analytics</button>
+                                    {menu.meals.length > 0 ? (
+                                        <ul>
+                                            {menu.meals.map((meal) => (
+                                                <li key={meal.meal_id} className="card-text">
+                                                    <strong>{meal.meal_name}</strong> (${meal.price.toFixed(2)})<br></br>{meal.meal_description}
+                                                    {meal.allergies && meal.allergies.length > 0 && (
+                                                        <div>
+                                                            {meal.allergies.map((a, index) => (
+                                                                <span key={index} className="badge rounded-pill bg-warning me-1">
+                                                                    {a.allergy_name}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    {userDetails?.role === "student" && (
+                                                        <div>
+                                                            <br />
+                                                            <button
+                                                                className="btn btn-primary btn-sm"
+                                                                onClick={() => {
+                                                                    setSelectedMeal(meal);
+                                                                    setShowPaymentPopup(true);
+                                                                }}
+                                                            >
+                                                                Order
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p>No meals available for this menu.</p>
+                                    )}
                                 </div>
                             </div>
-                        )}
-                        {userDetails.role === "student" && (
-                            <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
-                        )}
-                    </div>
+                        ))
+                    )}
                 </div>
-            )}
-            <div className="menu-section">
-                {loadingMenus ? (
-                    <p>Loading menus...</p>
-                ) : menus.length === 0 ? (
-                    <p>No menus to display.</p>
-                ) : (
-                    menus.map((menu) => (
-                        <div key={menu.menu_id} className="card bg-secondary mb-3">
-                            <div className="card-header">Menu for {menu.available_date}</div>
-                            <div className="card-body">
-                                {menu.meals.length > 0 ? (
-                                    <ul>
-                                        {menu.meals.map((meal) => (
-                                            <li key={meal.meal_id} className="card-text">
-                                                <strong>{meal.meal_name}</strong> (${meal.price.toFixed(2)})<br></br>{meal.meal_description}
-                                                {meal.allergies && meal.allergies.length > 0 && (
-                                                    <div>
-                                                        {meal.allergies.map((a, index) => (
-                                                            <span key={index} className="badge rounded-pill bg-warning me-1">
-                                                                {a.allergy_name}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                {userDetails?.role === "student" && (
-                                                    <div>
-                                                        <br />
-                                                        <button
-                                                            className="btn btn-primary btn-sm"
-                                                            onClick={() => {
-                                                                setSelectedMeal(meal);
-                                                                setShowPaymentPopup(true);
-                                                            }}
-                                                        >
-                                                            Order
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p>No meals available for this menu.</p>
-                                )}
+                {userDetails?.role === "student" && (
+                    <div className="card bg-secondary mb-3" style={{ maxWidth: "20rem" }}>
+                        <div className="card-header">History</div>
+                        <div className="card-body">
+                            <div className="card-text">
+                                <History userId={userDetails.user_id} key={historyUpdated} />
                             </div>
                         </div>
-                    ))
+                    </div>
+                )}
+                {showSelectMealPlanPopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-content">
+                            <h3>Select a Meal Plan</h3>
+                            {availableMealPlans.length > 0 ? (
+                                <ul>
+                                    {availableMealPlans.map((plan) => (
+                                        <li key={plan.meal_plan_id}>
+                                            {plan.plan_name} - ${plan.starting_balance}
+                                            <button className="btn btn-primary" onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No meal plans available.</p>
+                            )}
+                            <button className="btn btn-secondary" onClick={() => setShowSelectMealPlanPopup(false)}>Close</button>
+                        </div>
+                    </div>
+                )}
+                {showManageMenusPopup && <ManageMenus closePopup={() => setShowManageMenusPopup(false)} />}
+                {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
+                {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
+                {showAddFundsPopup && (
+                    <AddFundsPopup
+                        closePopup={() => setShowAddFundsPopup(false)}
+                        userId={userDetails.user_id}
+                        currentBalance={mealPlan.balance}
+                        updateBalance={updateBalance}
+                    />
+                )}
+                {showFeedbackPopup && <FeedbackPopup userId={userDetails.user_id} closePopup={() => setShowFeedbackPopup(false)} />}
+                {showViewFeedbackPopup && <ViewFeedback closePopup={() => setShowViewFeedbackPopup(false)} />}
+                {showManageAllergiesPopup && <ManageAllergies closePopup={() => setShowManageAllergiesPopup(false)} />}
+                {showPaymentPopup && (
+                    <div className="popup-overlay">
+                        <div className="popup-content">
+                            <h3>Select Payment Method</h3>
+                            {paymentMethods.length > 0 ? (
+                                <ul>
+                                    {paymentMethods.map(method => (
+                                        <li key={method.payment_method_id}>
+                                            <input
+                                                type="radio"
+                                                id={method.payment_method_id}
+                                                name="payment"
+                                                value={method.payment_method_id}
+                                                onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
+                                            />
+                                            <label htmlFor={method.payment_method_id}>{method.payment_name}</label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No payment methods available.</p>
+                            )}
+                            <button
+                                className="btn btn-primary"
+                                disabled={!selectedPaymentMethod}
+                                onClick={confirmOrder}
+                            >
+                                Confirm Order
+                            </button>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={() => {
+                                    setShowPaymentPopup(false);
+                                    setSelectedPaymentMethod(null);
+                                    setSelectedMeal(null);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
                 )}
             </div>
-            {userDetails?.role === "student" && (
-                <div className="card bg-secondary mb-3" style={{ maxWidth: "20rem" }}>
-                    <div className="card-header">History</div>
-                    <div className="card-body">
-                        <div className="card-text">
-                            <History userId={userDetails.user_id} key={historyUpdated} />
-                        </div>
-                    </div>
-                </div>
-            )}
-            <button className="btn btn-secondary" onClick={handleSignOut}>Sign Out</button>
-            {showSelectMealPlanPopup && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
-                        <h3>Select a Meal Plan</h3>
-                        {availableMealPlans.length > 0 ? (
-                            <ul>
-                                {availableMealPlans.map((plan) => (
-                                    <li key={plan.meal_plan_id}>
-                                        {plan.plan_name} - ${plan.starting_balance}
-                                        <button className="btn btn-primary" onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No meal plans available.</p>
-                        )}
-                        <button className="btn btn-secondary" onClick={() => setShowSelectMealPlanPopup(false)}>Close</button>
-                    </div>
-                </div>
-            )}
-            {showManageMenusPopup && <ManageMenus closePopup={() => setShowManageMenusPopup(false)} />}
-            {showManagePopup && <ManageMealPlans closePopup={() => setShowManagePopup(false)} />}
-            {showManagePaymentsPopup && <ManagePaymentMethods closePopup={() => setShowManagePaymentsPopup(false)} />}
-            {showAddFundsPopup && (
-                <AddFundsPopup
-                    closePopup={() => setShowAddFundsPopup(false)}
-                    userId={userDetails.user_id}
-                    currentBalance={mealPlan.balance}
-                    updateBalance={updateBalance}
-                />
-            )}
-            {showFeedbackPopup && <FeedbackPopup userId={userDetails.user_id} closePopup={() => setShowFeedbackPopup(false)} />}
-            {showViewFeedbackPopup && <ViewFeedback closePopup={() => setShowViewFeedbackPopup(false)} />}
-            {showManageAllergiesPopup && <ManageAllergies closePopup={() => setShowManageAllergiesPopup(false)} />}
-            {showPaymentPopup && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
-                        <h3>Select Payment Method</h3>
-                        {paymentMethods.length > 0 ? (
-                            <ul>
-                                {paymentMethods.map(method => (
-                                    <li key={method.payment_method_id}>
-                                        <input
-                                            type="radio"
-                                            id={method.payment_method_id}
-                                            name="payment"
-                                            value={method.payment_method_id}
-                                            onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
-                                        />
-                                        <label htmlFor={method.payment_method_id}>{method.payment_name}</label>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No payment methods available.</p>
-                        )}
-                        <button
-                            className="btn btn-primary"
-                            disabled={!selectedPaymentMethod}
-                            onClick={confirmOrder}
-                        >
-                            Confirm Order
-                        </button>
-                        <button
-                            className="btn btn-secondary"
-                            onClick={() => {
-                                setShowPaymentPopup(false);
-                                setSelectedPaymentMethod(null);
-                                setSelectedMeal(null);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            )}
-        </div>
+        </>
     );
 };
 

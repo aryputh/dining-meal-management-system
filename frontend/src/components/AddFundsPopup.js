@@ -70,7 +70,7 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
         <div className="popup-overlay">
             <div className="popup-content">
                 <h3>Add Funds</h3>
-                {error && <p className="error-text">{error}</p>}
+                {error && <p className="text-danger">{error}</p>}
 
                 <input
                     type="number"
