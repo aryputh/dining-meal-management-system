@@ -24,8 +24,19 @@ const Dashboard = () => {
     const [historyUpdated, setHistoryUpdated] = useState(false);
     const [showManageMenusPopup, setShowManageMenusPopup] = useState(false);
     const [showManageAllergiesPopup, setShowManageAllergiesPopup] = useState(false);
+    const [selectedMeal, setSelectedMeal] = useState(null);
+    const [showPaymentPopup, setShowPaymentPopup] = useState(false);
+    const [paymentMethods, setPaymentMethods] = useState([]);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
     useEffect(() => {
+        const fetchPayments = async () => {
+            if (userDetails?.role === "student") {
+                const { data, error } = await supabase.from("payment_methods").select("*");
+                if (!error) setPaymentMethods(data);
+            }
+        };
+
         const fetchUserDetails = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -75,9 +86,10 @@ const Dashboard = () => {
             setLoadingMenus(false);
         };        
 
+        if (showPaymentPopup) fetchPayments();
         fetchUserDetails();
         fetchMenusAndMeals();
-    }, [historyUpdated]);
+    }, [historyUpdated, showPaymentPopup]);
 
     const fetchMealPlans = async () => {
         const { data, error } = await supabase.from("meal_plans").select("meal_plan_id, plan_name, starting_balance");
@@ -168,6 +180,45 @@ const Dashboard = () => {
         }
     };
 
+    const confirmOrder = async () => {
+        if (!selectedMeal || !selectedPaymentMethod) return;
+    
+        if (userDetails.balance < selectedMeal.price) {
+            alert("Insufficient balance.");
+            return;
+        }
+    
+        const newBalance = userDetails.balance - selectedMeal.price;
+    
+        const { error: updateError } = await supabase
+            .from("users")
+            .update({ balance: newBalance })
+            .eq("user_id", userDetails.user_id);
+    
+        if (!updateError) {
+            await supabase.from("history").insert([
+                {
+                    user_id: userDetails.user_id,
+                    description: `Ordered ${selectedMeal.meal_name} for $${selectedMeal.price.toFixed(2)}`
+                }
+            ]);
+    
+            await supabase.from("orders").insert([
+                {
+                    user_id: userDetails.user_id,
+                    payment_method_id: selectedPaymentMethod,
+                    total: selectedMeal.price
+                }
+            ]);
+    
+            setUserDetails((prev) => ({ ...prev, balance: newBalance }));
+            setHistoryUpdated((prev) => !prev);
+            setSelectedMeal(null);
+            setSelectedPaymentMethod(null);
+            setShowPaymentPopup(false);
+        }
+    };    
+
     const updateBalance = (newBalance) => {
         setMealPlan((prev) => ({ ...prev, balance: newBalance }));
     };
@@ -242,9 +293,15 @@ const Dashboard = () => {
                                                 <div><em>Allergies: {meal.allergies.map(a => a.allergy_name).join(", ")}</em></div>
                                             )}
                                             {userDetails?.role === "student" && (
-                                                <button className="primary-btn" onClick={() =>
-                                                    handleOrderMeal(meal)
-                                                }>Order</button>
+                                                <button
+                                                className="primary-btn"
+                                                onClick={() => {
+                                                  setSelectedMeal(meal);
+                                                  setShowPaymentPopup(true);
+                                                }}
+                                              >
+                                                Order
+                                              </button>
                                             )}
                                         </li>
                                     ))}
@@ -294,6 +351,48 @@ const Dashboard = () => {
             {showFeedbackPopup && <FeedbackPopup userId={userDetails.user_id} closePopup={() => setShowFeedbackPopup(false)} />}
             {showViewFeedbackPopup && <ViewFeedback closePopup={() => setShowViewFeedbackPopup(false)} />}
             {showManageAllergiesPopup && <ManageAllergies closePopup={() => setShowManageAllergiesPopup(false)} />}
+            {showPaymentPopup && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h2>Select Payment Method</h2>
+                        {paymentMethods.length > 0 ? (
+                            <ul>
+                                {paymentMethods.map(method => (
+                                    <li key={method.payment_method_id}>
+                                        <input
+                                            type="radio"
+                                            id={method.payment_method_id}
+                                            name="payment"
+                                            value={method.payment_method_id}
+                                            onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
+                                        />
+                                        <label htmlFor={method.payment_method_id}>{method.payment_name}</label>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No payment methods available.</p>
+                        )}
+                        <button
+                            className="primary-btn"
+                            disabled={!selectedPaymentMethod}
+                            onClick={confirmOrder}
+                        >
+                            Confirm Order
+                        </button>
+                        <button
+                            className="secondary-btn"
+                            onClick={() => {
+                                setShowPaymentPopup(false);
+                                setSelectedPaymentMethod(null);
+                                setSelectedMeal(null);
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

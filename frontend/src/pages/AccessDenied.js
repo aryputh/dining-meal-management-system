@@ -8,7 +8,7 @@ const AccessDenied = () => {
         <div>
             <h1>Access Denied</h1>
             <p>You do not have permission to access this page.</p>
-            <button onClick={() => navigate("/")}>Back to Welcome Page</button>
+            <button className="primary-btn" onClick={() => navigate("/")}>Back to Welcome Page</button>
         </div>
     );
 };
