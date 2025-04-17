@@ -210,9 +210,9 @@ const Dashboard = () => {
                                 <div className="card bg-secondary mb-3">
                                     <div className="card-header">{mealPlan.plan_name}</div>
                                     <div className="card-body">
-                                        <p className="card-text"><strong>Balance</strong> ${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
-                                        <button className="btn btn-primary" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
-                                        <button className="btn btn-danger" onClick={handleRemoveMealPlan}>Remove Plan</button>
+                                        <p className="card-text"><strong>Balance</strong><br />${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
+                                        <button className="btn btn-primary me-1" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
+                                        <button className="btn btn-danger me-1" onClick={handleRemoveMealPlan}>Remove Plan</button>
                                     </div>
                                 </div>
                             ) : (

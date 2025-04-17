@@ -14195,64 +14195,7 @@ thead th {
     width: 300px;
 }
 
-.history-card {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    width: 100%;
-    max-height: 600px;
-    overflow-y: auto;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.history-list {
-    margin-top: 10px;
-}
-
-.history-entry {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-}
-
-.history-entry:last-child {
-    border-bottom: none;
-}
-
-.history-entry span {
-    display: block;
-    font-size: 13px;
-    color: gray;
-}
-
-.meal-plan-card {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0;
-    width: 300px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-.dropdown {
-    border: 5px solid red;
-}
-
 /* Feedback */
-.feedback-card {
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px 1px;
-    width: 500px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
 .feedback-container {
     display: flex;
     flex-direction: column;

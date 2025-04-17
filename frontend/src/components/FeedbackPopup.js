@@ -33,18 +33,18 @@ const FeedbackPopup = ({ closePopup, userId }) => {
                 <h3>Submit Feedback</h3>
                 {error && <p className="error-text">{error}</p>}
                 <textarea
-                    class="form-control"
+                    className="form-control"
                     placeholder="Enter your feedback"
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
                 />
-                <select class="dropdown-header" value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+                <select className="dropdown-header" value={rating} onChange={(e) => setRating(Number(e.target.value))}>
                     {[1, 2, 3, 4, 5].map((num) => (
-                        <option class="dropdown-item" key={num} value={num}>{num} Star{num > 1 && "s"}</option>
+                        <option className="dropdown-item" key={num} value={num}>{num} Star{num > 1 && "s"}</option>
                     ))}
                 </select>
-                <button className="btn btn-primary" onClick={submitFeedback}>Send Feedback</button>
-                <button className="btn btn-secondary" onClick={closePopup}>Cancel</button>
+                <button className="btn btn-primary me-1" onClick={submitFeedback}>Send Feedback</button>
+                <button className="btn btn-secondary me-1" onClick={closePopup}>Cancel</button>
             </div>
         </div>
     );
