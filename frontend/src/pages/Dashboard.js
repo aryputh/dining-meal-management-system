@@ -207,13 +207,12 @@ const Dashboard = () => {
                         <h3>Welcome, {userDetails.first_name} {userDetails.last_name}!</h3>
                         {userDetails.role === "student" && (
                             mealPlan ? (
-                                <div className="meal-plan-card">
-                                    <h4>{mealPlan.plan_name}</h4>
-                                    <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
-                                    <p><strong>Current Balance:</strong> ${userDetails.balance.toFixed(2)}</p>
-                                    <div className="meal-plan-actions">
+                                <div className="card bg-secondary mb-3">
+                                    <div className="card-header">{mealPlan.plan_name}</div>
+                                    <div className="card-body">
+                                        <p className="card-text"><strong>Balance</strong> ${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
                                         <button className="btn btn-primary" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
-                                        <button className="btn btn-danger" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
+                                        <button className="btn btn-danger" onClick={handleRemoveMealPlan}>Remove Plan</button>
                                     </div>
                                 </div>
                             ) : (
@@ -235,10 +234,10 @@ const Dashboard = () => {
                                 <button className="btn btn-primary" onClick={() => window.location.href = "/analytics"}>Analytics</button>
                             </div>
                         )}
-                    </div>
-                    {userDetails.role === "student" && (
+                        {userDetails.role === "student" && (
                         <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
-                    )}
+                        )}
+                    </div>
                 </div>
             )}
 
@@ -250,28 +249,30 @@ const Dashboard = () => {
                     <p>No menus to display.</p>
                 ) : (
                     menus.map((menu) => (
-                        <div key={menu.menu_id} className="menu-card">
-                            <h4>Menu for {menu.available_date}</h4>
-                            {menu.meals.length > 0 ? (
-                                <ul>
-                                    {menu.meals.map((meal) => (
-                                        <li key={meal.meal_id} className="meal-item">
-                                            <strong>{meal.meal_name}</strong>: {meal.meal_description} - ${meal.price.toFixed(2)}
-                                            {meal.allergies && meal.allergies.length > 0 && (
-                                                <div>
-                                                    {meal.allergies.map((a, index) => (
-                                                        <span key={index} className="badge rounded-pill bg-warning me-1">
-                                                        {a.allergy_name}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No meals available for this menu.</p>
-                            )}
+                        <div key={menu.menu_id} className="card bg-secondary mb-3">
+                            <div className="card-header">Menu for {menu.available_date}</div>
+                            <div className="card-body">
+                                {menu.meals.length > 0 ? (
+                                    <ul>
+                                        {menu.meals.map((meal) => (
+                                            <li key={meal.meal_id} className="card-text">
+                                                <strong>{meal.meal_name}</strong> (${meal.price.toFixed(2)})<br></br>{meal.meal_description}
+                                                {meal.allergies && meal.allergies.length > 0 && (
+                                                    <div>
+                                                        {meal.allergies.map((a, index) => (
+                                                            <span key={index} className="badge rounded-pill bg-warning me-1">
+                                                            {a.allergy_name}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p>No meals available for this menu.</p>
+                                )}
+                            </div>
                         </div>
                     ))
                 )}
