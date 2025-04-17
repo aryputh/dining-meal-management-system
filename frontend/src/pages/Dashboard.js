@@ -68,7 +68,7 @@ const Dashboard = () => {
         
             const menusWithMeals = await Promise.all(
                 menusData.map(async (menu) => {
-                    const { data: mealsData, error: mealsError } = await supabase
+                    const { data: mealsData} = await supabase
                         .from("meals")
                         .select("*, meal_allergies:meal_allergies(allergy_id, allergies(allergy_name))")
                         .eq("menu_id", menu.menu_id);
@@ -146,37 +146,6 @@ const Dashboard = () => {
 
             window.location.reload();
             setMealPlan(null);
-        }
-    };
-
-    const handleOrderMeal = async (meal) => {
-        if (!userDetails || userDetails.role !== "student") return;
-
-        const confirmOrder = window.confirm(`Confirm purchase of ${meal.meal_name} for $${meal.price.toFixed(2)}?`);
-        if (!confirmOrder) return;
-
-        if (userDetails.balance < meal.price) {
-            alert("Insufficient balance.");
-            return;
-        }
-
-        const newBalance = userDetails.balance - meal.price;
-
-        const { error } = await supabase
-            .from("users")
-            .update({ balance: newBalance })
-            .eq("user_id", userDetails.user_id);
-
-        if (!error) {
-            await supabase.from("history").insert([
-                {
-                    user_id: userDetails.user_id,
-                    description: `Ordered ${meal.meal_name} for $${meal.price.toFixed(2)}`
-                }
-            ]);
-
-            setUserDetails((prev) => ({ ...prev, balance: newBalance }));
-            setHistoryUpdated((prev) => !prev);
         }
     };
 
@@ -262,14 +231,13 @@ const Dashboard = () => {
                                 <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
                                 <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
                                 <button className="primary-btn" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
+                                <button className="primary-btn" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
+                                <button className="primary-btn" onClick={() => window.location.href = "/analytics"}>Analytics</button>
                             </div>
                         )}
                     </div>
                     {userDetails.role === "student" && (
                         <button className="primary-btn" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
-                    )}
-                    {userDetails.role === "admin" && (
-                        <button className="primary-btn" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
                     )}
                 </div>
             )}
