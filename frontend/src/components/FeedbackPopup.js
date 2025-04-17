@@ -30,20 +30,21 @@ const FeedbackPopup = ({ closePopup, userId }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Submit Feedback</h2>
+                <h3>Submit Feedback</h3>
                 {error && <p className="error-text">{error}</p>}
                 <textarea
+                    class="form-control"
                     placeholder="Enter your feedback"
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
                 />
-                <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+                <select class="dropdown-header" value={rating} onChange={(e) => setRating(Number(e.target.value))}>
                     {[1, 2, 3, 4, 5].map((num) => (
-                        <option key={num} value={num}>{num} Star{num > 1 && "s"}</option>
+                        <option class="dropdown-item" key={num} value={num}>{num} Star{num > 1 && "s"}</option>
                     ))}
                 </select>
-                <button className="primary-btn" onClick={submitFeedback}>Send Feedback</button>
-                <button className="secondary-btn" onClick={closePopup}>Cancel</button>
+                <button className="btn btn-primary" onClick={submitFeedback}>Send Feedback</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Cancel</button>
             </div>
         </div>
     );
@@ -73,7 +74,7 @@ const ViewFeedback = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Feedback</h2>
+                <h3>Feedback</h3>
                 {loading ? (
                     <p>Loading feedback...</p>
                 ) : feedbackList.length > 0 ? (
@@ -88,7 +89,7 @@ const ViewFeedback = ({ closePopup }) => {
                 ) : (
                     <p>No feedback available.</p>
                 )}
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );

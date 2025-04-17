@@ -94,23 +94,26 @@ const ManageMeals = ({ menuId, closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Manage Meals</h2>
+                <h3>Manage Meals</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="text"
+                    className="form-control"
                     placeholder="Meal Name"
                     value={mealName}
                     onChange={(e) => setMealName(e.target.value)}
                 />
                 <input
                     type="text"
+                    className="form-control"
                     placeholder="Meal Description"
                     value={mealDescription}
                     onChange={(e) => setMealDescription(e.target.value)}
                 />
                 <input
                     type="number"
+                    className="form-control"
                     placeholder="Price"
                     value={mealPrice}
                     onChange={(e) => setMealPrice(e.target.value)}
@@ -122,17 +125,18 @@ const ManageMeals = ({ menuId, closePopup }) => {
                         <div key={allergy.allergy_id}>
                             <input
                                 type="checkbox"
+                                className="form-check-input"
                                 id={`allergy-${allergy.allergy_id}`}
                                 value={allergy.allergy_id}
                                 checked={selectedAllergies.includes(allergy.allergy_id)}
                                 onChange={handleAllergyChange}
                             />
-                            <label htmlFor={`allergy-${allergy.allergy_id}`}>{allergy.allergy_name}</label>
+                            <label className="form-check-label" htmlFor={`allergy-${allergy.allergy_id}`}>{allergy.allergy_name}</label>
                         </div>
                     ))}
                 </div>
 
-                <button className="primary-btn" onClick={addMeal}>Add Meal</button>
+                <button className="btn btn-primary" onClick={addMeal}>Add Meal</button>
 
                 {loading ? (
                     <p>Loading meals...</p>
@@ -143,10 +147,16 @@ const ManageMeals = ({ menuId, closePopup }) => {
                                 <strong>{meal.meal_name}</strong>: {meal.meal_description} - ${meal.price.toFixed(2)}
                                 <br />
                                 {meal.allergies && meal.allergies.length > 0 && (
-                                    <em>Allergies: {meal.allergies.map(a => a.allergy_name).join(", ")}</em>
+                                    <div>
+                                        {meal.allergies.map((a, index) => (
+                                            <span key={index} className="badge rounded-pill bg-warning me-1">
+                                            {a.allergy_name}
+                                            </span>
+                                        ))}
+                                    </div>
                                 )}
                                 <br />
-                                <button className="danger-btn" onClick={() => deleteMeal(meal.meal_id)}>Delete</button>
+                                <button className="btn btn-danger" onClick={() => deleteMeal(meal.meal_id)}>Delete</button>
                             </li>
                         ))}
                     </ul>
@@ -154,7 +164,7 @@ const ManageMeals = ({ menuId, closePopup }) => {
                     <p>No meals available.</p>
                 )}
 
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );

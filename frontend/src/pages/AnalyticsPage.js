@@ -46,8 +46,8 @@ const AnalyticsPage = () => {
 
     return (
         <div className="dashboard-container">
-            <h1>Admin Analytics</h1>
-            <button className="secondary-btn" onClick={() => window.location.href = "/dashboard"}>
+            <h2>Admin Analytics</h2>
+            <button className="btn btn-secondary" onClick={() => window.location.href = "/dashboard"}>
                 Dashboard
             </button>
 
@@ -55,10 +55,10 @@ const AnalyticsPage = () => {
                 <p>Loading analytics...</p>
             ) : (
                 <div>
-                    <h2>Total Revenue</h2>
+                    <h3>Total Revenue</h3>
                     <p>${totalRevenue}</p>
 
-                    <h2>Revenue by Payment Method</h2>
+                    <h3>Revenue by Payment Method</h3>
                     {paymentStats.length > 0 ? (
                         <ul>
                             {paymentStats.map((p, idx) => (

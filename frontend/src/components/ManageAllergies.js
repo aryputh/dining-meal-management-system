@@ -53,16 +53,17 @@ const ManageAllergies = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Manage Allergy Types</h2>
+                <h3>Manage Allergy Types</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="text"
+                    class="form-control"
                     placeholder="New allergy name"
                     value={newAllergy}
                     onChange={(e) => setNewAllergy(e.target.value)}
                 />
-                <button className="primary-btn" onClick={addAllergy}>Add Allergy</button>
+                <button className="btn btn-primary" onClick={addAllergy}>Add Allergy</button>
 
                 {loading ? (
                     <p>Loading allergies...</p>
@@ -71,7 +72,7 @@ const ManageAllergies = ({ closePopup }) => {
                         {allergies.map((allergy) => (
                             <li key={allergy.allergy_id}>
                                 {allergy.allergy_name}
-                                <button className="danger-btn" onClick={() => deleteAllergy(allergy.allergy_id)}>Delete</button>
+                                <button className="btn btn-danger" onClick={() => deleteAllergy(allergy.allergy_id)}>Delete</button>
                             </li>
                         ))}
                     </ul>
@@ -79,7 +80,7 @@ const ManageAllergies = ({ closePopup }) => {
                     <p>No allergies available.</p>
                 )}
 
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );

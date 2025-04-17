@@ -62,15 +62,16 @@ const ManageMenus = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Manage Menus</h2>
+                <h3>Manage Menus</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="date"
+                    className="form-control"
                     value={newMenuDate}
                     onChange={(e) => setNewMenuDate(e.target.value)}
                 />
-                <button className="primary-btn" onClick={addMenu}>Add Menu</button>
+                <button className="btn btn-primary" onClick={addMenu}>Add Menu</button>
 
                 {loading ? (
                     <p>Loading menus...</p>
@@ -79,8 +80,8 @@ const ManageMenus = ({ closePopup }) => {
                         {menus.map((menu) => (
                             <li key={menu.menu_id}>
                                 {menu.available_date}
-                                <button className="primary-btn" onClick={() => setSelectedMenu(menu)}>Manage Meals</button>
-                                <button className="danger-btn" onClick={() => deleteMenu(menu.menu_id)}>Delete</button>
+                                <button className="btn btn-primary" onClick={() => setSelectedMenu(menu)}>Manage Meals</button>
+                                <button className="btn btn-danger" onClick={() => deleteMenu(menu.menu_id)}>Delete</button>
                             </li>
                         ))}
                     </ul>
@@ -88,7 +89,7 @@ const ManageMenus = ({ closePopup }) => {
                     <p>No menus available.</p>
                 )}
 
-                <button className="secondary-btn" onClick={() => {
+                <button className="btn btn-secondary" onClick={() => {
                     window.location.reload();
                 }}>
                     Close

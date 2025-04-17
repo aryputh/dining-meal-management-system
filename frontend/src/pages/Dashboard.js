@@ -199,27 +199,27 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <h1>Dashboard</h1>
+            <h2>Dashboard</h2>
             {userDetails && (
                 <div className="dashboard-content">
                     {/* Left Section - Meal Plan Info */}
                     <div className="left-section">
-                        <h2>Welcome, {userDetails.first_name} {userDetails.last_name}!</h2>
+                        <h3>Welcome, {userDetails.first_name} {userDetails.last_name}!</h3>
                         {userDetails.role === "student" && (
                             mealPlan ? (
                                 <div className="meal-plan-card">
-                                    <h3>{mealPlan.plan_name}</h3>
+                                    <h4>{mealPlan.plan_name}</h4>
                                     <p><strong>Starting Balance:</strong> ${mealPlan.starting_balance}</p>
                                     <p><strong>Current Balance:</strong> ${userDetails.balance.toFixed(2)}</p>
                                     <div className="meal-plan-actions">
-                                        <button className="primary-btn" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
-                                        <button className="danger-btn" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
+                                        <button className="btn btn-primary" onClick={() => setShowAddFundsPopup(true)}>Add Funds</button>
+                                        <button className="btn btn-danger" onClick={handleRemoveMealPlan}>Remove Meal Plan</button>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="meal-plan-selection">
                                     <p>No meal plan selected, select one now!</p>
-                                    <button className="primary-btn" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
+                                    <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
                                         Select Meal Plan
                                     </button>
                                 </div>
@@ -227,23 +227,23 @@ const Dashboard = () => {
                         )}
                         {userDetails.role === "admin" && (
                             <div className="admin-buttons">
-                                <button className="primary-btn" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
-                                <button className="primary-btn" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
-                                <button className="primary-btn" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
-                                <button className="primary-btn" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
-                                <button className="primary-btn" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
-                                <button className="primary-btn" onClick={() => window.location.href = "/analytics"}>Analytics</button>
+                                <button className="btn btn-primary" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
+                                <button className="btn btn-primary" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                                <button className="btn btn-primary" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                                <button className="btn btn-primary" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
+                                <button className="btn btn-primary" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
+                                <button className="btn btn-primary" onClick={() => window.location.href = "/analytics"}>Analytics</button>
                             </div>
                         )}
                     </div>
                     {userDetails.role === "student" && (
-                        <button className="primary-btn" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
+                        <button className="btn btn-primary" onClick={() => setShowFeedbackPopup(true)}>Give Feedback</button>
                     )}
                 </div>
             )}
 
             <div className="menu-section">
-                <h2>Menus</h2>
+                <h3>Menus</h3>
                 {loadingMenus ? (
                     <p>Loading menus...</p>
                 ) : menus.length === 0 ? (
@@ -251,25 +251,20 @@ const Dashboard = () => {
                 ) : (
                     menus.map((menu) => (
                         <div key={menu.menu_id} className="menu-card">
-                            <h3>Menu for {menu.available_date}</h3>
+                            <h4>Menu for {menu.available_date}</h4>
                             {menu.meals.length > 0 ? (
                                 <ul>
                                     {menu.meals.map((meal) => (
                                         <li key={meal.meal_id} className="meal-item">
                                             <strong>{meal.meal_name}</strong>: {meal.meal_description} - ${meal.price.toFixed(2)}
                                             {meal.allergies && meal.allergies.length > 0 && (
-                                                <div><em>Allergies: {meal.allergies.map(a => a.allergy_name).join(", ")}</em></div>
-                                            )}
-                                            {userDetails?.role === "student" && (
-                                                <button
-                                                className="primary-btn"
-                                                onClick={() => {
-                                                  setSelectedMeal(meal);
-                                                  setShowPaymentPopup(true);
-                                                }}
-                                              >
-                                                Order
-                                              </button>
+                                                <div>
+                                                    {meal.allergies.map((a, index) => (
+                                                        <span key={index} className="badge rounded-pill bg-warning me-1">
+                                                        {a.allergy_name}
+                                                        </span>
+                                                    ))}
+                                                </div>
                                             )}
                                         </li>
                                     ))}
@@ -282,25 +277,25 @@ const Dashboard = () => {
                 )}
             </div>
 
-            <button className="secondary-btn" onClick={handleSignOut}>Sign Out</button>
+            <button className="btn btn-secondary" onClick={handleSignOut}>Sign Out</button>
 
             {showSelectMealPlanPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        <h2>Select a Meal Plan</h2>
+                        <h3>Select a Meal Plan</h3>
                         {availableMealPlans.length > 0 ? (
                             <ul>
                                 {availableMealPlans.map((plan) => (
                                     <li key={plan.meal_plan_id}>
                                         {plan.plan_name} - ${plan.starting_balance}
-                                        <button className="primary-btn" onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
+                                        <button className="btn btn-primary" onClick={() => handleSelectMealPlan(plan.meal_plan_id, plan.starting_balance)}>Select</button>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
                             <p>No meal plans available.</p>
                         )}
-                        <button className="secondary-btn" onClick={() => setShowSelectMealPlanPopup(false)}>Close</button>
+                        <button className="btn btn-secondary" onClick={() => setShowSelectMealPlanPopup(false)}>Close</button>
                     </div>
                 </div>
             )}
@@ -322,7 +317,7 @@ const Dashboard = () => {
             {showPaymentPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        <h2>Select Payment Method</h2>
+                        <h3>Select Payment Method</h3>
                         {paymentMethods.length > 0 ? (
                             <ul>
                                 {paymentMethods.map(method => (
@@ -342,14 +337,14 @@ const Dashboard = () => {
                             <p>No payment methods available.</p>
                         )}
                         <button
-                            className="primary-btn"
+                            className="btn btn-primary"
                             disabled={!selectedPaymentMethod}
                             onClick={confirmOrder}
                         >
                             Confirm Order
                         </button>
                         <button
-                            className="secondary-btn"
+                            className="btn btn-secondary"
                             onClick={() => {
                                 setShowPaymentPopup(false);
                                 setSelectedPaymentMethod(null);

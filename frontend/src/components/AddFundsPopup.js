@@ -69,11 +69,12 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Add Funds</h2>
+                <h3>Add Funds</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="number"
+                    class="form-control"
                     placeholder="Enter amount"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
@@ -88,8 +89,8 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
                     ))}
                 </select>
 
-                <button className="primary-btn" onClick={handleAddFunds}>Add Funds</button>
-                <button className="secondary-btn" onClick={closePopup}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleAddFunds}>Add Funds</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Cancel</button>
             </div>
         </div>
     );

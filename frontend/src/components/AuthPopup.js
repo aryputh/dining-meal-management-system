@@ -74,27 +74,27 @@ const AuthPopup = ({ setUser, closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>{isSignUp ? "Sign Up" : "Login"}</h2>
+                <h3>{isSignUp ? "Sign Up" : "Login"}</h3>
                 {error && <p className="error-text">{error}</p>}
                 <form onSubmit={handleAuth}>
                     {isSignUp && (
                         <>
-                            <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                            <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                            <select value={role} onChange={(e) => setRole(e.target.value)}>
-                                <option value="student">Student</option>
-                                <option value="admin">Admin</option>
+                            <input type="text" class="form-control" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+                            <input type="text" class="form-control" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+                            <select class="dropdown-header" value={role} onChange={(e) => setRole(e.target.value)}>
+                                <option class="dropdown-item" value="student">Student</option>
+                                <option class="dropdown-item" value="admin">Admin</option>
                             </select>
                         </>
                     )}
-                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                    <button className="primary-btn" type="submit" disabled={loading}>{isSignUp ? "Sign Up" : "Login"}</button>
+                    <input type="email" class="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <input type="password" class="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <button className="btn btn-primary" type="submit" disabled={loading}>{isSignUp ? "Sign Up" : "Login"}</button>
                 </form>
-                <button className="primary-btn" onClick={() => setIsSignUp(!isSignUp)}>
+                <button className="btn btn-primary" onClick={() => setIsSignUp(!isSignUp)}>
                     {isSignUp ? "Already have an account? Log in" : "Need an account? Sign up"}
                 </button>
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );

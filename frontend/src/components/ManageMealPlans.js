@@ -89,22 +89,24 @@ const ManageMealPlans = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Manage Meal Plans</h2>
+                <h3>Manage Meal Plans</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="text"
+                    class="form-control"
                     placeholder="Meal Plan Name"
                     value={newPlanName}
                     onChange={(e) => setNewPlanName(e.target.value)}
                 />
                 <input
                     type="number"
+                    class="form-control"
                     placeholder="Starting Balance"
                     value={startingBalance}
                     onChange={(e) => setStartingBalance(e.target.value)}
                 />
-                <button className="primary-btn" onClick={addMealPlan}>Add Meal Plan</button>
+                <button className="btn btn-primary" onClick={addMealPlan}>Add Meal Plan</button>
 
                 {loading ? (
                     <p>Loading meal plans...</p>
@@ -116,26 +118,28 @@ const ManageMealPlans = ({ closePopup }) => {
                                     <>
                                         <input
                                             type="text"
+                                            class="form-control"
                                             value={editPlanName}
                                             onChange={(e) => setEditPlanName(e.target.value)}
                                         />
                                         <input
                                             type="number"
+                                            class="form-control"
                                             value={editStartingBalance}
                                             onChange={(e) => setEditStartingBalance(e.target.value)}
                                         />
-                                        <button className="primary-btn" onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
-                                        <button className="secondary-btn" onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
+                                        <button className="btn btn-primary" onClick={() => updateMealPlan(plan.meal_plan_id)}>Save</button>
+                                        <button className="btn btn-secondary" onClick={() => { setEditPlan(null); setError(""); }}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
                                         {plan.plan_name} - ${plan.starting_balance}
-                                        <button className="primary-btn" onClick={() => {
+                                        <button className="btn btn-primary" onClick={() => {
                                             setEditPlan(plan.meal_plan_id);
                                             setEditPlanName(plan.plan_name);
                                             setEditStartingBalance(plan.starting_balance);
                                         }}>Edit</button>
-                                        <button className="danger-btn" onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
+                                        <button className="btn btn-danger" onClick={() => deleteMealPlan(plan.meal_plan_id)}>Delete</button>
                                     </>
                                 )}
                             </li>
@@ -145,7 +149,7 @@ const ManageMealPlans = ({ closePopup }) => {
                     <p>No meal plans available.</p>
                 )}
 
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );

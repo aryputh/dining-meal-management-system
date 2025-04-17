@@ -23,7 +23,7 @@ const History = ({ userId }) => {
 
     return (
         <div className="history-card">
-            <h3>History</h3>
+            <h4>History</h4>
             <div className="history-list">
                 {history.length > 0 ? (
                     history.map((entry, index) => (

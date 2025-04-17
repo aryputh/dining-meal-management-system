@@ -72,16 +72,17 @@ const ManagePaymentMethods = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Manage Payment Methods</h2>
+                <h3>Manage Payment Methods</h3>
                 {error && <p className="error-text">{error}</p>}
 
                 <input
                     type="text"
+                    class="form-control"
                     placeholder="New Payment Method"
                     value={newMethodName}
                     onChange={(e) => setNewMethodName(e.target.value)}
                 />
-                <button className="primary-btn" onClick={addPaymentMethod}>Add Payment Method</button>
+                <button className="btn btn-primary" onClick={addPaymentMethod}>Add Payment Method</button>
 
                 {paymentMethods.length > 0 ? (
                     <ul>
@@ -91,20 +92,21 @@ const ManagePaymentMethods = ({ closePopup }) => {
                                     <>
                                         <input
                                             type="text"
+                                            class="form-control"
                                             value={editMethodName}
                                             onChange={(e) => setEditMethodName(e.target.value)}
                                         />
-                                        <button className="primary-btn" onClick={() => updatePaymentMethod(method.payment_method_id)}>Save</button>
-                                        <button className="secondary-btn" onClick={() => setEditMethod(null)}>Cancel</button>
+                                        <button className="btn btn-primary" onClick={() => updatePaymentMethod(method.payment_method_id)}>Save</button>
+                                        <button className="btn btn-secondary" onClick={() => setEditMethod(null)}>Cancel</button>
                                     </>
                                 ) : (
                                     <>
                                         {method.payment_name}
-                                        <button className="primary-btn" onClick={() => {
+                                        <button className="btn btn-primary" onClick={() => {
                                             setEditMethod(method.payment_method_id);
                                             setEditMethodName(method.payment_name);
                                         }}>Edit</button>
-                                        <button className="danger-btn" onClick={() => deletePaymentMethod(method.payment_method_id)}>Delete</button>
+                                        <button className="btn btn-danger" onClick={() => deletePaymentMethod(method.payment_method_id)}>Delete</button>
                                     </>
                                 )}
                             </li>
@@ -114,7 +116,7 @@ const ManagePaymentMethods = ({ closePopup }) => {
                     <p>No payment methods available.</p>
                 )}
 
-                <button className="secondary-btn" onClick={closePopup}>Close</button>
+                <button className="btn btn-secondary" onClick={closePopup}>Close</button>
             </div>
         </div>
     );
