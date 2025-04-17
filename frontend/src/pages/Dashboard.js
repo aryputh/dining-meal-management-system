@@ -197,7 +197,6 @@ const Dashboard = () => {
         <>
             <Navbar />
             <div className="dashboard-container">
-                <h2>Dashboard</h2>
                 {userDetails && (
                     <div className="dashboard-content">
                         {/* Left Section - Meal Plan Info */}

@@ -30,7 +30,7 @@ const FeedbackPopup = ({ closePopup, userId }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>Submit Feedback</h3>
+                <h4>Submit Feedback</h4>
                 {error && <p className="text-danger">{error}</p>}
                 <textarea
                     className="form-control"
@@ -74,7 +74,7 @@ const ViewFeedback = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>Feedback</h3>
+                <h4>Feedback</h4>
                 {loading ? (
                     <p>Loading feedback...</p>
                 ) : feedbackList.length > 0 ? (

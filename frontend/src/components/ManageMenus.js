@@ -62,7 +62,7 @@ const ManageMenus = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>Manage Menus</h3>
+                <h4>Manage Menus</h4>
                 {error && <p className="text-danger">{error}</p>}
 
                 <input

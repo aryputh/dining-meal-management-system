@@ -6,7 +6,7 @@ const Welcome = ({ setUser }) => {
 
     return (
         <div>
-            <h2>Welcome to the Dining Meal Management System</h2>
+            <h3>Welcome!</h3>
             <button class="btn btn-primary" onClick={() => setShowPopup(true)}>Continue</button>
             {showPopup && <AuthPopup setUser={setUser} closePopup={() => setShowPopup(false)} />}
         </div>

@@ -49,7 +49,6 @@ const AnalyticsPage = () => {
         <>
             <Navbar />
         <div className="dashboard-container">
-            <h2>Admin Analytics</h2>
             {loading ? (
                 <p>Loading analytics...</p>
             ) : (
@@ -74,7 +73,6 @@ const AnalyticsPage = () => {
                     </div>
                 </div>
             )}
-            <button className="btn btn-secondary" onClick={() => window.location.href = "/dashboard"}>Dashboard</button>
         </div>
         </>
     );

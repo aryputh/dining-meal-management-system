@@ -74,7 +74,7 @@ const AuthPopup = ({ setUser, closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>{isSignUp ? "Sign Up" : "Login"}</h3>
+                <h4>{isSignUp ? "Sign Up" : "Login"}</h4>
                 {error && <p className="text-danger">{error}</p>}
                 <form onSubmit={handleAuth}>
                     {isSignUp && (

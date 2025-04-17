@@ -72,7 +72,7 @@ const ManagePaymentMethods = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>Manage Payment Methods</h3>
+                <h4>Manage Payment Methods</h4>
                 {error && <p className="text-danger">{error}</p>}
 
                 <input

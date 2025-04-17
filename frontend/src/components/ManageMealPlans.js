@@ -89,7 +89,7 @@ const ManageMealPlans = ({ closePopup }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h3>Manage Meal Plans</h3>
+                <h4>Manage Meal Plans</h4>
                 {error && <p className="text-danger">{error}</p>}
 
                 <input
