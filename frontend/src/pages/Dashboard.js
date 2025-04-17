@@ -227,13 +227,19 @@ const Dashboard = () => {
                             )
                         )}
                         {userDetails.role === "admin" && (
-                            <div className="admin-buttons">
-                                <button className="btn btn-primary" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
-                                <button className="btn btn-primary" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
-                                <button className="btn btn-primary" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
-                                <button className="btn btn-primary" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
-                                <button className="btn btn-primary" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
-                                <button className="btn btn-primary" onClick={() => window.location.href = "/analytics"}>Analytics</button>
+                            <div className="card bg-secondary mb-3">
+                                <div className="card-header">Admin Controls</div>
+                                <div className="card-body">
+                                    <p className="card-text">Manage meals, allergies, menus, and payment methods.</p>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageMenusPopup(true)}>Manage Menus</button>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePopup(true)}>Manage Meal Plans</button>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManagePaymentsPopup(true)}>Manage Payment Methods</button>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowManageAllergiesPopup(true)}>Manage Allergies</button>
+                                    <br /><br />
+                                    <p className="card-text">View feedback and analytics from students.</p>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => setShowViewFeedbackPopup(true)}>View Feedback</button>
+                                    <button className="btn btn-primary me-1 mb-1" onClick={() => window.location.href = "/analytics"}>Analytics</button>
+                                </div>
                             </div>
                         )}
                         {userDetails.role === "student" && (
@@ -266,17 +272,19 @@ const Dashboard = () => {
                                                         ))}
                                                     </div>
                                                 )}
-                                                <br></br>
                                                 {userDetails?.role === "student" && (
-                                                    <button
-                                                        className="btn btn-primary btn-sm"
-                                                        onClick={() => {
-                                                            setSelectedMeal(meal);
-                                                            setShowPaymentPopup(true);
-                                                        }}
-                                                    >
-                                                        Order
-                                                    </button>
+                                                    <div>
+                                                        <br />
+                                                        <button
+                                                            className="btn btn-primary btn-sm"
+                                                            onClick={() => {
+                                                                setSelectedMeal(meal);
+                                                                setShowPaymentPopup(true);
+                                                            }}
+                                                        >
+                                                            Order
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </li>
                                         ))}
