@@ -47,27 +47,31 @@ const AnalyticsPage = () => {
     return (
         <div className="dashboard-container">
             <h2>Admin Analytics</h2>
-            <button className="btn btn-secondary" onClick={() => window.location.href = "/dashboard"}>
-                Dashboard
-            </button>
-
             {loading ? (
                 <p>Loading analytics...</p>
             ) : (
                 <div>
-                    <h3>Total Revenue</h3>
-                    <p>${totalRevenue}</p>
-
-                    <h3>Revenue by Payment Method</h3>
-                    {paymentStats.length > 0 ? (
-                        <ul>
-                            {paymentStats.map((p, idx) => (
-                                <li key={idx}>{p.methodName}: ${p.total}</li>
-                            ))}
-                        </ul>
-                    ) : <p>No data</p>}
+                    <div className="card bg-secondary mb-3">
+                        <div className="card-header">Total Revenue</div>
+                        <div className="card-body">
+                            <p className="card-text">For all orders for all of time: ${totalRevenue}</p>
+                        </div>
+                    </div>
+                    <div className="card bg-secondary mb-3">
+                        <div className="card-header">Revenue by Payment Method</div>
+                        <div className="card-body">
+                            {paymentStats.length > 0 ? (
+                                <ul>
+                                    {paymentStats.map((p, idx) => (
+                                        <li key={idx}><strong>{p.methodName}</strong><br />{((p.total / totalRevenue) * 100).toFixed(2)}% (${p.total})</li>
+                                    ))}
+                                </ul>
+                            ) : <p>No data</p>}
+                        </div>
+                    </div>
                 </div>
             )}
+            <button className="btn btn-secondary" onClick={() => window.location.href = "/dashboard"}>Dashboard</button>
         </div>
     );
 };
