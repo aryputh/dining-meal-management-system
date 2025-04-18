@@ -14168,6 +14168,7 @@ thead th {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 100
 }
 
 .popup-content {
@@ -14176,6 +14177,7 @@ thead th {
     border-radius: 8px;
     max-width: 70%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 101
 }
 
 /* Shared container layout for dashboard & welcome */
