@@ -43,6 +43,7 @@ const FeedbackPopup = ({ closePopup, userId }) => {
                         <option className="dropdown-item" key={num} value={num}>{num} Star{num > 1 && "s"}</option>
                     ))}
                 </select>
+                {/* <br /> */}
                 <button className="btn btn-primary me-1" onClick={submitFeedback}>Send Feedback</button>
                 <button className="btn btn-secondary me-1" onClick={closePopup}>Cancel</button>
             </div>

@@ -88,9 +88,9 @@ const AddFundsPopup = ({ closePopup, userId, currentBalance, updateBalance }) =>
                         </option>
                     ))}
                 </select>
-
-                <button className="btn btn-primary" onClick={handleAddFunds}>Add Funds</button>
-                <button className="btn btn-secondary" onClick={closePopup}>Cancel</button>
+                <br />
+                <button className="btn btn-primary me-1" onClick={handleAddFunds}>Add Funds</button>
+                <button className="btn btn-secondary me-1" onClick={closePopup}>Cancel</button>
             </div>
         </div>
     );

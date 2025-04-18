@@ -204,7 +204,7 @@ const Dashboard = () => {
                             <h3>Welcome, {userDetails.first_name} {userDetails.last_name}!</h3>
                             {userDetails.role === "student" && (
                                 mealPlan ? (
-                                    <div className="card bg-secondary mb-3">
+                                    <div className="card bg-secondary mb-3" style={{ width: "20rem" }}>
                                         <div className="card-header">{mealPlan.plan_name}</div>
                                         <div className="card-body">
                                             <p className="card-text"><strong>Balance</strong><br />${userDetails.balance.toFixed(2)} / ${mealPlan.starting_balance.toFixed(2)}</p>
@@ -213,7 +213,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="card bg-secondary mb-3">
+                                    <div className="card bg-secondary mb-3" style={{ width: "20rem" }}>
                                         <div className="card-header">No Meal Plan Selected</div>
                                         <div className="card-body">
                                             <button className="btn btn-primary" onClick={() => { setShowSelectMealPlanPopup(true); fetchMealPlans(); }}>
@@ -224,7 +224,7 @@ const Dashboard = () => {
                                 )
                             )}
                             {userDetails.role === "admin" && (
-                                <div className="card bg-secondary mb-3">
+                                <div className="card bg-secondary mb-3" style={{ width: "20rem" }}>
                                     <div className="card-header">Admin Controls</div>
                                     <div className="card-body">
                                         <p className="card-text">Manage meals, allergies, menus, and payment methods.</p>
@@ -252,7 +252,7 @@ const Dashboard = () => {
                         <p>No menus to display.</p>
                     ) : (
                         menus.map((menu) => (
-                            <div key={menu.menu_id} className="card bg-secondary mb-3">
+                            <div key={menu.menu_id} className="card bg-secondary mb-3" style={{ width: "20rem" }}>
                                 <div className="card-header">Menu for {menu.available_date}</div>
                                 <div className="card-body">
                                     {menu.meals.length > 0 ? (
@@ -271,7 +271,6 @@ const Dashboard = () => {
                                                     )}
                                                     {userDetails?.role === "student" && (
                                                         <div>
-                                                            <br />
                                                             <button
                                                                 className="btn btn-primary btn-sm"
                                                                 onClick={() => {
@@ -295,7 +294,7 @@ const Dashboard = () => {
                     )}
                 </div>
                 {userDetails?.role === "student" && (
-                    <div className="card bg-secondary mb-3" style={{ maxWidth: "20rem" }}>
+                    <div className="card bg-secondary mb-3" style={{ width: "20rem", height: "37rem" }}>
                         <div className="card-header">History</div>
                         <div className="card-body">
                             <div className="card-text">
@@ -341,34 +340,38 @@ const Dashboard = () => {
                 {showPaymentPopup && (
                     <div className="popup-overlay">
                         <div className="popup-content">
-                            <h3>Select Payment Method</h3>
+                            <h4>Select Payment Method</h4>
                             {paymentMethods.length > 0 ? (
                                 <ul>
                                     {paymentMethods.map(method => (
-                                        <li key={method.payment_method_id}>
-                                            <input
-                                                type="radio"
-                                                id={method.payment_method_id}
-                                                name="payment"
-                                                value={method.payment_method_id}
-                                                onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
-                                            />
-                                            <label htmlFor={method.payment_method_id}>{method.payment_name}</label>
-                                        </li>
+                                    <li key={method.payment_method_id} className="form-check">
+                                        <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id={method.payment_method_id}
+                                        name="payment"
+                                        value={method.payment_method_id}
+                                        onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
+                                        />
+                                        <label className="form-check-label ms-2" htmlFor={method.payment_method_id}>
+                                        {method.payment_name}
+                                        </label>
+                                    </li>
                                     ))}
-                                </ul>
+                                </ul>                              
                             ) : (
                                 <p>No payment methods available.</p>
                             )}
+                            {/* <br /> */}
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary me-1"
                                 disabled={!selectedPaymentMethod}
                                 onClick={confirmOrder}
                             >
                                 Confirm Order
                             </button>
                             <button
-                                className="btn btn-secondary"
+                                className="btn btn-secondary me-1"
                                 onClick={() => {
                                     setShowPaymentPopup(false);
                                     setSelectedPaymentMethod(null);
