@@ -29,6 +29,18 @@ const Dashboard = () => {
     const [showPaymentPopup, setShowPaymentPopup] = useState(false);
     const [paymentMethods, setPaymentMethods] = useState([]);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const menusPerPage = 1;
+
+    const totalPages = Math.ceil(menus.length / menusPerPage);
+    const startIndex = (currentPage - 1) * menusPerPage;
+    const selectedMenus = menus.slice(startIndex, startIndex + menusPerPage);
+
+    const goToPage = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
 
     useEffect(() => {
         const fetchPayments = async () => {
@@ -251,47 +263,73 @@ const Dashboard = () => {
                     ) : menus.length === 0 ? (
                         <p>No menus to display.</p>
                     ) : (
-                        menus.map((menu) => (
-                            <div key={menu.menu_id} className="card bg-secondary mb-3" style={{ width: "20rem" }}>
-                                <div className="card-header">Menu for {menu.available_date}</div>
-                                <div className="card-body">
-                                    {menu.meals.length > 0 ? (
-                                        <ul>
-                                            {menu.meals.map((meal) => (
-                                                <li key={meal.meal_id} className="card-text">
-                                                    <strong>{meal.meal_name}</strong> (${meal.price.toFixed(2)})<br></br>{meal.meal_description}
-                                                    {meal.allergies && meal.allergies.length > 0 && (
-                                                        <div>
-                                                            {meal.allergies.map((a, index) => (
-                                                                <span key={index} className="badge rounded-pill bg-warning me-1">
-                                                                    {a.allergy_name}
-                                                                </span>
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                    {userDetails?.role === "student" && (
-                                                        <div>
-                                                            <button
-                                                                className="btn btn-primary btn-sm"
-                                                                onClick={() => {
-                                                                    setSelectedMeal(meal);
-                                                                    setShowPaymentPopup(true);
-                                                                }}
-                                                            >
-                                                                Order
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p>No meals available for this menu.</p>
-                                    )}
+                        <>
+                            {/* Menu Card for current page */}
+                            {selectedMenus.map((menu) => (
+                                <div key={menu.menu_id} className="card bg-secondary mb-3" style={{ width: "20rem", height: "34rem" }}>
+                                    <div className="card-header">Menu for {menu.available_date}</div>
+                                    <div className="card-body">
+                                        {menu.meals.length > 0 ? (
+                                            <ul>
+                                                {menu.meals.map((meal) => (
+                                                    <li key={meal.meal_id} className="card-text mb-2">
+                                                        <strong>{meal.meal_name}</strong> (${meal.price.toFixed(2)})<br />
+                                                        {meal.meal_description}
+                                                        {meal.allergies?.length > 0 && (
+                                                            <div className="mt-1">
+                                                                {meal.allergies.map((a, index) => (
+                                                                    <span key={index} className="badge rounded-pill bg-warning me-1">
+                                                                        {a.allergy_name}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                        {userDetails?.role === "student" && (
+                                                            <div className="mt-2">
+                                                                <button
+                                                                    className="btn btn-primary btn-sm"
+                                                                    onClick={() => {
+                                                                        setSelectedMeal(meal);
+                                                                        setShowPaymentPopup(true);
+                                                                    }}
+                                                                >
+                                                                    Order
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <p>No meals available for this menu.</p>
+                                        )}
+                                    </div>
                                 </div>
+                            ))}
+                            {/* Pagination Controls */}
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <ul className="pagination pagination-sm">
+                                    <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                        <button className="page-link" onClick={() => goToPage(currentPage - 1)}>&laquo;</button>
+                                    </li>
+                                    {Array.from({ length: totalPages }, (_, index) => (
+                                        <li
+                                            key={index}
+                                            className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
+                                        >
+                                            <button className="page-link" onClick={() => goToPage(index + 1)}>
+                                                {index + 1}
+                                            </button>
+                                        </li>
+                                    ))}
+                                    <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                        <button className="page-link" onClick={() => goToPage(currentPage + 1)}>&raquo;</button>
+                                    </li>
+                                </ul>
                             </div>
-                        ))
+                        </>
                     )}
+
                 </div>
                 {userDetails?.role === "student" && (
                     <div className="card bg-secondary mb-3" style={{ width: "20rem", height: "37rem" }}>
@@ -344,21 +382,21 @@ const Dashboard = () => {
                             {paymentMethods.length > 0 ? (
                                 <ul>
                                     {paymentMethods.map(method => (
-                                    <li key={method.payment_method_id} className="form-check">
-                                        <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        id={method.payment_method_id}
-                                        name="payment"
-                                        value={method.payment_method_id}
-                                        onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
-                                        />
-                                        <label className="form-check-label ms-2" htmlFor={method.payment_method_id}>
-                                        {method.payment_name}
-                                        </label>
-                                    </li>
+                                        <li key={method.payment_method_id} className="form-check">
+                                            <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                id={method.payment_method_id}
+                                                name="payment"
+                                                value={method.payment_method_id}
+                                                onChange={() => setSelectedPaymentMethod(method.payment_method_id)}
+                                            />
+                                            <label className="form-check-label ms-2" htmlFor={method.payment_method_id}>
+                                                {method.payment_name}
+                                            </label>
+                                        </li>
                                     ))}
-                                </ul>                              
+                                </ul>
                             ) : (
                                 <p>No payment methods available.</p>
                             )}
