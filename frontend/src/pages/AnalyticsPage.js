@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PieChart } from '@mui/x-charts/PieChart';
 import Navbar from "../components/Navbar";
 import supabase from "../supabaseClient";
 import "../styles/global.css";
@@ -48,32 +49,65 @@ const AnalyticsPage = () => {
     return (
         <>
             <Navbar />
-        <div className="dashboard-container">
-            {loading ? (
-                <p>Loading analytics...</p>
-            ) : (
-                <div>
-                    <div className="card bg-secondary mb-3">
-                        <div className="card-header">Total Revenue</div>
-                        <div className="card-body">
-                            <p className="card-text">For all orders for all of time: ${totalRevenue}</p>
+            <div className="dashboard-container">
+                {loading ? (
+                    <p>Loading analytics...</p>
+                ) : (
+                    <div>
+                        <div className="card bg-secondary mb-3">
+                            <div className="card-header">Revenue by Payment Method</div>
+                            <div className="card-body">
+                                {paymentStats.length > 0 ? (
+                                    <>
+                                        <ul>
+                                            {paymentStats.map((p, idx) => (
+                                                <li key={idx}>
+                                                    <strong>{p.methodName}</strong><br />
+                                                    {((p.total / totalRevenue) * 100).toFixed(2)}% (${p.total})
+                                                </li>
+                                            ))}
+                                        </ul>
+
+                                        <PieChart
+                                            series={[
+                                                {
+                                                    data: paymentStats.map((p, idx) => ({
+                                                        id: idx,
+                                                        value: p.total,
+                                                        label: p.methodName,
+                                                    })),
+                                                    innerRadius: 30,
+                                                    outerRadius: 100,
+                                                    paddingAngle: 1,
+                                                    cornerRadius: 0,
+                                                    startAngle: 0,
+                                                    endAngle: 360,
+                                                    cx: 150,
+                                                    cy: 150,
+                                                }
+                                            ]}
+                                            height={300}
+                                            width={300}
+                                        />
+                                    </>
+                                ) : <p>No data</p>}
+                            </div>
                         </div>
                     </div>
-                    <div className="card bg-secondary mb-3">
-                        <div className="card-header">Revenue by Payment Method</div>
-                        <div className="card-body">
-                            {paymentStats.length > 0 ? (
-                                <ul>
-                                    {paymentStats.map((p, idx) => (
-                                        <li key={idx}><strong>{p.methodName}</strong><br />{((p.total / totalRevenue) * 100).toFixed(2)}% (${p.total})</li>
-                                    ))}
-                                </ul>
-                            ) : <p>No data</p>}
+                )}
+                {loading ? (
+                    <p>Loading analytics...</p>
+                ) : (
+                    <div>
+                        <div className="card bg-secondary mb-3">
+                            <div className="card-header">Total Revenue</div>
+                            <div className="card-body">
+                                <p className="card-text">For all orders for all of time: ${totalRevenue}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
         </>
     );
 };
